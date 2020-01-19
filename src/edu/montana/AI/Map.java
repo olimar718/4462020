@@ -8,20 +8,17 @@ public class Map {
     List<Connection> connections;
     List<Region> regions;
 
-    public Map(int numberOfPoint) {
-        this.mapSize = numberOfPoint;
+    public Map(int numberOfRegions) {
+        this.mapSize = numberOfRegions;
         this.regions = new ArrayList<Region>();
         this.connections = new ArrayList<Connection>();
     }
-
-
     public int goal(Map this) {
         return 0;
     }
 
     public Connection connectRegion(Region region1, Region region2) {
-        Boolean isCorrect = Boolean.FALSE;
-        Connection connection = new Connection(isCorrect, region1, region2);
+        Connection connection = new Connection(Boolean.FALSE, region1, region2);
         return connection;
     }
 
