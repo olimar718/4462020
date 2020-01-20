@@ -25,12 +25,9 @@ public class Region {
                     currentClosest = region;
                     distance = currentDistance;
                 }
-            } else {//if this is the same region then continue the loop
-                continue;
             }
-
         }
-        System.err.println("Region " + this.regionId + " coordinate " + this.x + " " + this.y + " is closest to Region " + currentClosest.regionId + " coordinate " + currentClosest.x + " " + currentClosest.y);
+        //System.err.println("Region " + this.regionId + " coordinate " + this.x + " " + this.y + " is closest to Region " + currentClosest.regionId + " coordinate " + currentClosest.x + " " + currentClosest.y);//debug
         System.out.flush();
         return currentClosest;
     }

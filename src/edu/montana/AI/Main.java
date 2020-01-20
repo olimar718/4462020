@@ -17,7 +17,7 @@ public class Main {
         }
         //Connect the closest region, checking if the connections cross another (not implemented yet)
         for (Region region : map.regions) {
-            System.out.println(region.x + " " + region.y);
+            //System.out.println(region.x + " " + region.y);//debug
             System.out.flush();
             Region closest = region.findClosest(map.regions);//find the closest region
             map.connections.add(map.connectRegion(region, closest));
@@ -25,8 +25,8 @@ public class Main {
 
         //Start to color the regions properly
         while (Boolean.TRUE) {
+            map.colorRegion(map.regions.get(0), colors);
             break;
-
         }
     }
 }
