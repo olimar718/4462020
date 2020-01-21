@@ -5,7 +5,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         int regionIndex = 0;
-        int numberOfRegions = 10;//Shoud be defined by argument (String[] args)
+        int numberOfRegions = 100;//Shoud be defined by argument (String[] args)
         String[] colors = {"red", "green", "blue", "yellow"};
         Map map = new Map(numberOfRegions);
 
