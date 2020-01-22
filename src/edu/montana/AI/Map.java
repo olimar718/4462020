@@ -14,7 +14,7 @@ public class Map {
         this.connections = new ArrayList<>();
     }
 
-    public int goal(Map this) {
+    public int goal(Map map) {
         return 0;
     }
 
@@ -23,12 +23,16 @@ public class Map {
     }
 
     public void colorRegion(Region region, String[] possibleColors) {
+
+        /** change how list works */
+
         //first we find the color of the neighbor to our region
         List<String> neighborcolors = new ArrayList<>();
         for (Connection mapConnections : this.connections) {//going trought the list of connection to find the one connected to the current region
             if (mapConnections.connectedRegion1.regionId == region.regionId) {
                 neighborcolors.add(mapConnections.connectedRegion2.color);
             }
+            //change to make sure color is not added more than once
             if (mapConnections.connectedRegion2.regionId == region.regionId) {
                 neighborcolors.add(mapConnections.connectedRegion1.color);
             }
