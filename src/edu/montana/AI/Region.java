@@ -20,6 +20,7 @@ public class Region {
         int distance = 1000;
         for (Region region : regions) {
             if (!(region.regionId == this.regionId)) { //if this is not the same region. If calculate the distance to the same region, then this will alway be the closest one.
+                //change formula to calculate hypotenuse insead of just lenth of x+y
                 int currentDistance = Math.addExact(Math.abs(this.x - region.x), Math.abs(this.y - region.y));//calculate the distance by summing the absolute value of the difference between coordinate x and coordinate y
                 if (distance > currentDistance) {
                     currentClosest = region;
