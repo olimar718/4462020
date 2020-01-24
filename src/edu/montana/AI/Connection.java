@@ -12,8 +12,8 @@ public class Connection {
         this.connectedRegion2 = connectedRegion2;
     }
 
-    public Boolean connectionCorrect(Connection connection){
-        if (connection.connectedRegion1.color.equals(connection.connectedRegion2.color) ){
+    public Boolean connectionCorrect(){
+        if (this.connectedRegion1.color.equals(this.connectedRegion2.color) ){
             this.status=Boolean.FALSE;
             return this.status;
         }

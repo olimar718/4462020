@@ -22,7 +22,7 @@ public class GraphPanel extends JPanel {
     g2d.setColor(Color.black);
 
     int rad = 5;
-    int data = 10;
+    int data = 100;
     int[] x = new int[data];
     int[] y = new int[data];
     String[] colors = {"red", "green", "blue", "yellow"};

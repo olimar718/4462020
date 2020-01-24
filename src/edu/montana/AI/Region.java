@@ -15,7 +15,7 @@ public class Region {
         this.regionId = regionId;
     }
 
-    public Region findClosest(List<Region> regions) {
+    public Region findClosest(Region[] regions) {
         Region currentClosest = null;
         int distance = 1000;
         for (Region region : regions) {

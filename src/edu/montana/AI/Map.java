@@ -5,12 +5,13 @@ import java.util.List;
 
 public class Map {
     int mapSize;
-    List<Connection> connections;
-    List<Region> regions;
+    ArrayList<Connection> connections;
+    Region[] regions;
 
     public Map(int numberOfRegions) {
+
         this.mapSize = numberOfRegions;
-        this.regions = new ArrayList<>();
+        this.regions = new Region[this.mapSize];
         this.connections = new ArrayList<>();
     }
 
