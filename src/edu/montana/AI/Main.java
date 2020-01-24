@@ -27,7 +27,8 @@ public class Main {
 
         //Start to color the regions properly
         while (Boolean.TRUE) {
-            map.colorRegion(map.regions.get(0), colors);
+            Algorithms algo=new Algorithms();
+            algo.minConflict(map);
             break;
         }
     }
