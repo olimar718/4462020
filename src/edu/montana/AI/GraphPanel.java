@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
+import java.lang.Integer.*;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -55,8 +56,11 @@ public class GraphPanel extends JPanel {
           break;
       }
 
-      // Ellipse2D.Double circle = new Ellipse2D.Double(x[i])-rad, (y[i])-rad, rad*2, rad*2);
+      String location = x[i]+","+y[i];
+
       g2d.fillOval((x[i])-rad, (y[i])-rad, rad*2, rad*2);
+      g2d.setColor(Color.black);
+      g2d.drawString(location, (x[i])-rad, (y[i])-rad);
     }
 
     //connect dots based on what order they were placed
@@ -64,7 +68,7 @@ public class GraphPanel extends JPanel {
     for(int i =0; i < x.length-1; i++){
       g2d.drawLine(x[i], y[i], x[i+1], y[i+1]);
     }
-
+    g2d.fillOval(10,10, rad*2, rad*2);
     
   }
 
