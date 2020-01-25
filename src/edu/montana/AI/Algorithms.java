@@ -32,7 +32,7 @@ public class Algorithms {
             double selectedregion=Math.random();
             if (selectedregion > 0.5) {
                 neighbourcolor.add(conflictingConnection.connectedRegion1.color);//we know it to be our neighbour so we add it to the list
-                
+
                 for (Connection mapConnection : map.connections) {//going trought the list of connection to find the one connected to the current region
                     if (mapConnection.connectedRegion1.regionId == conflictingConnection.connectedRegion2.regionId) {
                         neighbourcolor.add(mapConnection.connectedRegion2.color);
