@@ -1,9 +1,7 @@
 package edu.montana.AI;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Random;
+
 
 public class Algorithms {
     public Algorithms() {
@@ -112,7 +110,7 @@ public class Algorithms {
 
     public Map genetic(Map map) {
 
-        ArrayList<Map> population = new ArrayList<>();//vs List<Map> population= new ArrayList<>();//vs Map[] pop; ???
+        //ArrayList<Map> population = new ArrayList<>();//vs List<Map> population= new ArrayList<>();//vs Map[] pop; ???
         return map;
     }
 

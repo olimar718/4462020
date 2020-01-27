@@ -1,6 +1,5 @@
 package edu.montana.AI;
 
-import java.util.List;
 
 public class Region {
     public String color;
