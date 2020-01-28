@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         
         int regionIndex = 0;
-        int numberOfRegions = 100;//Shoud be defined by argument (String[] args)
+        int numberOfRegions = 50;//Shoud be defined by argument (String[] args)
         int size = 500;//Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 

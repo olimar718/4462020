@@ -31,8 +31,9 @@ public class Region {
                             no_connection_possible = true;
                             break;   //if there is already a connection
                         }
-                        if(!(connection.connectedRegion1==this ||connection.connectedRegion2==this)){
+                        if(!(connection.connectedRegion1.regionId==this.regionId ||connection.connectedRegion2.regionId==this.regionId ||connection.connectedRegion1.regionId==region.regionId ||connection.connectedRegion2.regionId==region.regionId )){
                             if(doIntersect(this,region, connection.connectedRegion1, connection.connectedRegion2)){
+                                System.out.println("A connection between "+this.regionId+" and "+region.regionId+" would cross the connection between "+connection.connectedRegion1.regionId+" and "+connection.connectedRegion2.regionId);
                                 no_connection_possible = true;
                                 break;   //if the connections crosses another
                             }
