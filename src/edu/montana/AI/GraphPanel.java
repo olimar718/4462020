@@ -73,12 +73,6 @@ public class GraphPanel extends JPanel {
   }
 
   public static void main(String[] args) {
-    GraphPanel points = new GraphPanel();
-    JFrame frame = new JFrame("Points");
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.add(points);
-    frame.setSize(500, 500);
-    frame.setLocationRelativeTo(null);
-    frame.setVisible(true);
+   GraphPanel d = new GraphPanel();
   }
 }
