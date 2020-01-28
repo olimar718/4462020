@@ -13,7 +13,7 @@ public class Connection {
     }
 
     public Boolean connectionCorrect(){
-        if (this.connectedRegion1.color.equals(this.connectedRegion2.color) ){
+        if (this.connectedRegion1.color.equals(this.connectedRegion2.color)||this.connectedRegion1.color == ""||this.connectedRegion2.color == ""){
             this.status=Boolean.FALSE;
             return this.status;
         }

@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         
         int regionIndex = 0;
-        int numberOfRegions = 50;//Shoud be defined by argument (String[] args)
+        int numberOfRegions = 5;//Shoud be defined by argument (String[] args)
         int size = 500;//Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -28,7 +28,7 @@ public class Main {
                 }
                 //System.out.println(region.x + " " + region.y+ " "+ region.regionId);//debug
                 
-                Region closest = region.findClosest(map);//find the closest region
+                Region closest = region.findClosest_connectable(map);//find the closest region
                 if(closest==region){
                     fully_Connected_Region.add(region);
                     continue;
@@ -37,11 +37,9 @@ public class Main {
             }
         }
         Algorithms algo=new Algorithms();
-        algo.randomAssignement(map);
-        // for (Connection connection : map.connections) {
-        //     System.out.println(connection);     
-        // }
-        DrawingPanel draw = new DrawingPanel(map);
+        //algo.randomAssignement(map);
+        algo.genetic(map, 5, 2,2);//algo.genetic(map, population_size, tournament_size, number_of_parents);
+        //new DrawingPanel(map);
 
     }
 }

@@ -14,7 +14,7 @@ public class Region {
         this.regionId = regionId;
     }
 
-    public Region findClosest(Map map) {
+    public Region findClosest_connectable(Map map) {
         Region currentClosest = this;
         int distance = 250000;
         boolean no_connection_possible = false;
@@ -33,7 +33,7 @@ public class Region {
                         }
                         if(!(connection.connectedRegion1.regionId==this.regionId ||connection.connectedRegion2.regionId==this.regionId ||connection.connectedRegion1.regionId==region.regionId ||connection.connectedRegion2.regionId==region.regionId )){
                             if(doIntersect(this,region, connection.connectedRegion1, connection.connectedRegion2)){
-                                System.out.println("A connection between "+this.regionId+" and "+region.regionId+" would cross the connection between "+connection.connectedRegion1.regionId+" and "+connection.connectedRegion2.regionId);
+                                //System.out.println("A connection between "+this.regionId+" and "+region.regionId+" would cross the connection between "+connection.connectedRegion1.regionId+" and "+connection.connectedRegion2.regionId);
                                 no_connection_possible = true;
                                 break;   //if the connections crosses another
                             }

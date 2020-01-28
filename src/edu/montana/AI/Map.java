@@ -15,8 +15,14 @@ public class Map {
         this.connections = new ArrayList<>();
     }
 
-    public int goal(Map map) {
-        return 0;
+    public int goal() {
+        int number_of_incorrect=0;
+        for (Connection connection : this.connections) {
+            if(!(connection.connectionCorrect())){
+                number_of_incorrect = number_of_incorrect + 1;
+            }
+        }
+        return number_of_incorrect;
     }
 
     public Connection connectRegion(Region region1, Region region2) {
