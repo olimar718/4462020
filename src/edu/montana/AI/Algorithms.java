@@ -118,7 +118,7 @@ public class Algorithms {
         String[] colors = {"red", "green", "blue", "yellow"};
         for (Region region : map.regions) {
             region.color = colors[(int) (Math.random() * 4)];
-            System.out.println(region.color);
+            // System.out.println(region.color);
         }
         return map;
     }

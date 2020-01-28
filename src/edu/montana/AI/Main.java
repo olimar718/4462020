@@ -1,12 +1,13 @@
 package edu.montana.AI;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
         
         int regionIndex = 0;
-        int numberOfRegions = 50;//Shoud be defined by argument (String[] args)
+        int numberOfRegions = 100;//Shoud be defined by argument (String[] args)
         int size = 500;//Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -18,29 +19,28 @@ public class Main {
 
         }
         //Connect the closest region, checking if the connections cross another (not implemented yet)
-        int  impossible_to_connect = 0;
-        System.out.println("Mapsize"+map.mapSize);
-        while(impossible_to_connect < map.mapSize){
+        System.out.println("Mapsize "+map.mapSize);
+        ArrayList<Region> fully_Connected_Region= new ArrayList<>();
+        while(fully_Connected_Region.size()< map.mapSize){
             for (Region region : map.regions) {
-                System.out.println(region.x + " " + region.y);//debug
-                System.out.flush();
+                if (fully_Connected_Region.contains(region)){
+                    continue;
+                }
+                //System.out.println(region.x + " " + region.y+ " "+ region.regionId);//debug
                 
-                Region closest = region.findClosest(map.regions, map);//find the closest region
+                Region closest = region.findClosest(map);//find the closest region
                 if(closest==region){
-                    impossible_to_connect++;
-                    System.out.println("impossible "+impossible_to_connect);
+                    fully_Connected_Region.add(region);
                     continue;
                 }
                 map.connections.add(map.connectRegion(region, closest));
-                impossible_to_connect++;
             }
         }
         Algorithms algo=new Algorithms();
         algo.randomAssignement(map);
-        for (Connection connection : map.connections) {
-            System.out.println(connection);
-            
-        }
+        // for (Connection connection : map.connections) {
+        //     System.out.println(connection);     
+        // }
         DrawingPanel draw = new DrawingPanel(map);
         //Start to color the regions properly
 

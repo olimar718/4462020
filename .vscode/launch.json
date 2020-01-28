@@ -1,0 +1,28 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch) - Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-GraphPanel<4462020_a97233e4>",
+            "request": "launch",
+            "mainClass": "edu.montana.AI.GraphPanel",
+            "projectName": "4462020_a97233e4"
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Main<4462020_a97233e4>",
+            "request": "launch",
+            "mainClass": "edu.montana.AI.Main",
+            "projectName": "4462020_a97233e4"
+        }
+    ]
+}

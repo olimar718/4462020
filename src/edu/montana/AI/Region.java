@@ -14,43 +14,31 @@ public class Region {
         this.regionId = regionId;
     }
 
-    public Region findClosest(Region[] regions, Map map) {
+    public Region findClosest(Map map) {
         Region currentClosest = this;
         int distance = 250000;
-        boolean check = false;
+        boolean no_connection_possible = false;
         
-        for (Region region : regions) {
+        for (Region region : map.regions) {
             if (!(region.regionId == this.regionId)) { //if this is not the same region. If calculate the distance to the same region, then this will alway be the closest one.
                 //change formula to calculate hypotenuse insead of just lenth of x+y
                 //int currentDistance = Math.addExact(Math.abs(this.x - region.x), Math.abs(this.y - region.y));//calculate the distance by summing the absolute value of the difference between coordinate x and coordinate y
                 int currentDistance = (int) Math.sqrt(Math.pow(Math.abs(this.x - region.x), 2) + Math.pow(Math.abs(this.y - region.y), 2));
-                
-                if (distance > currentDistance) {
-                    for (Connection connection : map.connections) {                        
-                        if (connection.connectedRegion2.regionId == region.regionId 
-                            && connection.connectedRegion1.regionId == this.regionId 
-                            || connection.connectedRegion2.regionId == this.regionId 
-                            && connection.connectedRegion1.regionId == region.regionId) {
-                            check = true;
+                if (currentDistance<distance) {//
+                    for (Connection connection : map.connections) { 
+                        no_connection_possible=false;   
+                        if (((connection.connectedRegion1.regionId == region.regionId) && (connection.connectedRegion2.regionId == this.regionId)) || ((connection.connectedRegion1.regionId == this.regionId) && (connection.connectedRegion2.regionId == region.regionId))){
+                            no_connection_possible = true;
                             break;   //if there is already a connection
-                        }
-                        else{
-                            // detect cross
-                            // if(doIntersect(this, region, connection.connectedRegion1, connection.connectedRegion2)){
-                            //     System.out.println("yes");
-                            //     check = true;
-                            //     break;
-                            // }
-                            // else{
-                            //     System.out.println("no");
-                            // }
-                        }
+                        }//need to check cross
+
                     }
-                    if(check == true){
+                    if(no_connection_possible == true){
                         continue;
+                    }else{
+                        currentClosest = region;
+                        distance = currentDistance;
                     }
-                    currentClosest = region;
-                    distance = currentDistance;
                 }
             }
         }
