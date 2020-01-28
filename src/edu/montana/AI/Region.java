@@ -30,7 +30,14 @@ public class Region {
                         if (((connection.connectedRegion1.regionId == region.regionId) && (connection.connectedRegion2.regionId == this.regionId)) || ((connection.connectedRegion1.regionId == this.regionId) && (connection.connectedRegion2.regionId == region.regionId))){
                             no_connection_possible = true;
                             break;   //if there is already a connection
-                        }//need to check cross
+                        }
+                        if(!(connection.connectedRegion1==this ||connection.connectedRegion2==this)){
+                            if(doIntersect(this,region, connection.connectedRegion1, connection.connectedRegion2)){
+                                no_connection_possible = true;
+                                break;   //if the connections crosses another
+                            }
+                        }
+
 
                     }
                     if(no_connection_possible == true){

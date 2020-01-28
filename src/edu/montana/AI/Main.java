@@ -42,7 +42,6 @@ public class Main {
         //     System.out.println(connection);     
         // }
         DrawingPanel draw = new DrawingPanel(map);
-        //Start to color the regions properly
 
     }
 }
