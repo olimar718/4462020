@@ -118,6 +118,12 @@ public class Algorithms {
         for (int i = 0; i < population_size; i = i + 1) {// generates the base population of population_size randomly
             population[i] = map;
             randomAssignement(population[i]);
+            System.out.println(i);
+            //new DrawingPanel(population[i]);
+        }
+        for(int i = 0; i < population_size; i = i + 1){
+            System.out.println(i);
+            new DrawingPanel(population[i]);
         }
         while (!(reached_goal)) {
             //tournament selection
@@ -125,20 +131,13 @@ public class Algorithms {
             for (int i = 0; i < number_of_parents; i = i + 1) {//selecting the parent via tournament_selection
                 Map[] tournament_contestant = new Map[tournament_size];
                 for (int j = 0; j < tournament_size; j = j + 1) {//selecting the contestant
-                    try {
-                        Thread.sleep(500);
-                    } catch (Exception e) {
-                        //TODO: handle exception
-                    }
-                    rand.setSeed(System.currentTimeMillis());
                     tournament_contestant[j]=population[rand.nextInt(population_size - 1)];
                 }
                 for (Map map2 : tournament_contestant) {
-
+                    
                     System.out.println("GOALLLLLLLLL "+map2.goal());
-                    new DrawingPanel(map2);
+                    //new DrawingPanel(map2);
                 }
-
                 try{
                 Thread.sleep(900000000);
                 }catch(Exception e){
@@ -151,11 +150,20 @@ public class Algorithms {
     }
 
     public Map randomAssignement(Map map) {
+        Random rand2 = new Random();
+        // while(Boolean.TRUE){
+        //     try {
+        //         Thread.sleep(1000);
+        //     } catch (Exception e) {
+        //         // TODO: handle exception
+        //     }
+        //     System.out.println(rand2.ints());
+        // }
         String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
         // TODO random seed avoid sleep.
         try {
-            Thread.sleep(500);
+            Thread.sleep(1000);
         } catch (Exception e) {
             // TODO: handle exception
         }
