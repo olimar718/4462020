@@ -37,6 +37,7 @@ public class Main {
             }
         }
         Algorithms algo=new Algorithms();
+        // algo.simpleBacktracking(map);
         //algo.randomAssignement(map);
         //new DrawingPanel(map);
         algo.genetic(map, 5, 2,2);//algo.genetic(map, population_size, tournament_size, number_of_parents);

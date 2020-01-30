@@ -100,6 +100,12 @@ public class Algorithms {
     }
 
     public Map simpleBacktracking(Map map) {
+        int numColors = 3;
+        if(!graphColoring(map, numColors, 0, map.regions[0])){
+            System.out.println("Solution doesn't exist");
+        }
+        new DrawingPanel(map);
+        System.out.println("Drew simpleBacktracking");
         return map;
     }
 
@@ -168,5 +174,33 @@ public class Algorithms {
             region.color = colors[rand.nextInt(4)];
             // System.out.println(region.color);
         }
+    }
+
+    public boolean graphColoring(Map map, int numColors, int colored, Region region) {
+        if(map.mapSize == colored){
+            return true;
+        }
+
+        for (int i=0; i < numColors; i++){
+            if(colorCheck(colored, map, region)){
+                region.color = "red"; //need to change to be dynamic
+                if(graphColoring(map, numColors, colored+1, region)){
+                    return true;
+                }
+                region.color = "";
+            }
+        }
+
+        return false;
+    }
+
+    public boolean colorCheck(int colored, Map map, Region region) {
+        //return true if surrounding colors are a different color or not yet assigned a color
+        for (int i = 0; i < map.mapSize; i++) {
+            if(map.regions[i].color.equals(region.color)){
+                return false;
+            }
+        }
+        return true;
     }
 }
