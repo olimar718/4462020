@@ -104,4 +104,14 @@ public class Region {
   
     return false; // Doesn't fall in any of the above cases 
 }
+@Override
+public Object clone(){
+    Region region = null;
+    try {
+        region = (Region) super.clone();
+    } catch (Exception e) {
+        region = new Region(this.color, this.x, this.y, this.regionId);
+    }
+    return region;
+}
 }

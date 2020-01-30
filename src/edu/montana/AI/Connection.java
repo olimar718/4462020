@@ -21,4 +21,14 @@ public class Connection {
         return this.status;
 
     }
+    @Override
+    public Object clone(){
+        Connection connection = null;
+        try{
+            connection = (Connection) super.clone();
+        }catch(Exception e){
+            connection = new Connection(Boolean.FALSE, (Region) connectedRegion1.clone(), (Region) connectedRegion2.clone());
+        }
+        return connection;
+    }
 }

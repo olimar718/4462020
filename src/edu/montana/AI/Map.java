@@ -14,6 +14,11 @@ public class Map {
         this.regions = new Region[this.mapSize];
         this.connections = new ArrayList<>();
     }
+    public Map(int mapSize, Region[] regions, ArrayList<Connection> connections){
+        this.mapSize=mapSize;
+        this.regions=regions;
+        this.connections=connections;
+    }
 
     public int goal() {
         int number_of_incorrect=0;
@@ -67,5 +72,25 @@ public class Map {
             index = index + 1;
         }
 
+    }
+    @Override
+    public Object clone(){
+        Map map = null;
+        try {
+            map = (Map) super.clone();
+        } catch (Exception e) {
+            ArrayList<Connection> new_map_connection = new ArrayList<>();
+            Region[] new_map_regions = new Region[this.mapSize];
+            for (Connection connection : this.connections) {
+                new_map_connection.add((Connection) connection.clone());
+            }
+            for(int i = 0; i < mapSize; i = i + 1){
+                new_map_regions[i]=(Region) this.regions[i].clone();
+                //System.out.println(this.regions[i].clone().getClass());
+            }
+            map = new Map(this.mapSize, new_map_regions, new_map_connection );
+
+        }
+        return map;
     }
 }

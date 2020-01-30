@@ -12,7 +12,7 @@ public class Algorithms {
     public Map minConflict(Map map, String[] colors) {
 
         // initial assignement
-        map = randomAssignement(map);
+        // randomAssignement(map);
         Boolean consistent = Boolean.FALSE;
         ArrayList<Connection> conflictingConnections = new ArrayList<>();
         while (!(consistent)) {
@@ -116,13 +116,11 @@ public class Algorithms {
         Boolean reached_goal = Boolean.FALSE;
         Random rand = new Random();
         for (int i = 0; i < population_size; i = i + 1) {// generates the base population of population_size randomly
-            population[i] = map;
+            population[i] = (Map)map.clone();
             randomAssignement(population[i]);
-            System.out.println(i);
-            //new DrawingPanel(population[i]);
         }
         for(int i = 0; i < population_size; i = i + 1){
-            System.out.println(i);
+            System.out.println(population[i]);
             new DrawingPanel(population[i]);
         }
         while (!(reached_goal)) {
@@ -149,7 +147,7 @@ public class Algorithms {
         return map;
     }
 
-    public Map randomAssignement(Map map) {
+    public void randomAssignement(Map map) {
         Random rand2 = new Random();
         // while(Boolean.TRUE){
         //     try {
@@ -172,6 +170,5 @@ public class Algorithms {
             region.color = colors[rand.nextInt(4)];
             // System.out.println(region.color);
         }
-        return map;
     }
 }
