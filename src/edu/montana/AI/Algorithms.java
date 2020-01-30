@@ -160,12 +160,12 @@ public class Algorithms {
         String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
         // TODO random seed avoid sleep.
-        try {
-            Thread.sleep(1000);
-        } catch (Exception e) {
-            // TODO: handle exception
-        }
-        rand.setSeed(System.currentTimeMillis());
+        // try {
+        //     Thread.sleep(1000);
+        // } catch (Exception e) {
+        //     // TODO: handle exception
+        // }
+        rand.setSeed(System.nanoTime());
         for (Region region : map.regions) {
             region.color = colors[rand.nextInt(4)];
             // System.out.println(region.color);
