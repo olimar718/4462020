@@ -111,62 +111,111 @@ public class Algorithms {
         return map;
     }
 
-    public Map genetic(Map map, int population_size, int tournament_size, int number_of_parents) {
+    public Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
+            int mutation_probability) {
         Map[] population = new Map[population_size];
         Boolean reached_goal = Boolean.FALSE;
         Random rand = new Random();
-        for (int i = 0; i < population_size; i = i + 1) {// generates the base population of population_size randomly
-            population[i] = (Map)map.clone();
+        // generates the base population of population_size randomly
+        for (int i = 0; i < population_size; i = i + 1) {
+            population[i] = (Map) map.clone();
             randomAssignement(population[i]);
         }
-        while (!(reached_goal)) {//or limit exceeded
-            //tournament selection
+        while (!(reached_goal)) {// or limit exceeded
+            // tournament selection
             Map[] parents = new Map[number_of_parents];
-            for (int i = 0; i < number_of_parents; i = i + 1) {//selecting the parent via tournament_selection
+            for (int i = 0; i < number_of_parents; i = i + 1) {// selecting the parent via tournament_selection
                 Map[] tournament_contestants = new Map[tournament_size];
-                for (int j = 0; j < tournament_size; j = j + 1) {//selecting the contestant
-                    tournament_contestants[j]=population[rand.nextInt(population_size - 1)];
+                for (int j = 0; j < tournament_size; j = j + 1) {// selecting the contestant
+                    tournament_contestants[j] = population[rand.nextInt(population_size - 1)];
                 }
+                // run the tournament
+                Map winner = tournament_contestants[0];
                 for (Map tournament_contestant : tournament_contestants) {
-                    Map winner = null;
-                    System.out.println("GOALLLLLLLLL ");
-                    // if(tournament_contestant.goal()>winner.goal()){
+                    int current_contest_goal = tournament_contestant.goal();
+                    System.out.println(current_contest_goal);
+                    new DrawingPanel(tournament_contestant, "Contestant");
+                    try {
+                        Thread.sleep(900000000);
+                    } catch (Exception e) {
 
-                    // }
-                    //new DrawingPanel(map2);
+                    }
+                    
+                    if (current_contest_goal == 0) {// the goal has been reached so we return
+                        reached_goal = Boolean.TRUE;
+                        return (Map) tournament_contestant.clone();
+                    }
+                    if (current_contest_goal < winner.goal()) {
+                        winner = tournament_contestant;
+                    }
                 }
-                try{
-                Thread.sleep(900000000);
-                }catch(Exception e){
+                // save the winner as a parent
+                parents[i] = (Map) winner.clone();
+            }
+            // recombine (crossover)
+            // for(Map parent : parents){
+            // new DrawingPanel(parent, "parent");
+            // }
+            for (int i = 0; i < population_size; i = i + 1) {
+                population[i] = (Map) genetic_recombine(parents).clone();
+            }
+            // for(Map child : population){
+            // new DrawingPanel(child, "child");
+            // }
 
+            // mutate
+            for (Map child : population) {
+                genetic_mutate(child, mutation_probability);
+                // new DrawingPanel(child, "mutated");
+            }
+
+            // try {
+            // Thread.sleep(900000000);
+            // } catch (Exception e) {
+
+            // }
+        }
+        return map;
+    }
+
+    public Map genetic_recombine(Map[] maps) {
+        Random rand = new Random();
+        Map recombined = (Map) maps[0].clone();
+        for (Region recombined_region : recombined.regions) {
+            String[] ordered_colors = new String[maps.length];
+            int i = 0;
+            for (Map map : maps) {
+                for (Region region : map.regions) {
+                    if (region.regionId == recombined_region.regionId) {
+                        ordered_colors[i] = region.color;
+                        i = i + 1;
+                    }
                 }
+            }
+            rand.setSeed(System.nanoTime());
+            recombined_region.color = ordered_colors[rand.nextInt(ordered_colors.length)];
+        }
+        return recombined;
+    }
+
+    public Map genetic_mutate(Map map, int mutation_probability) {
+        String[] colors = { "red", "green", "blue", "yellow" };
+        Random rand = new Random();
+        for (Region region : map.regions) {
+            rand.setSeed(System.nanoTime());
+            if (rand.nextInt(mutation_probability) == 0) {
+                region.color = colors[rand.nextInt(4)];// TODO gaussian / normal distribution ?
             }
         }
         return map;
     }
 
     public void randomAssignement(Map map) {
-        Random rand2 = new Random();
-        // while(Boolean.TRUE){
-        //     try {
-        //         Thread.sleep(1000);
-        //     } catch (Exception e) {
-        //         // TODO: handle exception
-        //     }
-        //     System.out.println(rand2.ints());
-        // }
         String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
-        // TODO random seed avoid sleep.
-        // try {
-        //     Thread.sleep(1000);
-        // } catch (Exception e) {
-        //     // TODO: handle exception
-        // }
         rand.setSeed(System.nanoTime());
         for (Region region : map.regions) {
             region.color = colors[rand.nextInt(4)];
-            // System.out.println(region.color);
         }
     }
 }

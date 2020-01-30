@@ -39,8 +39,8 @@ public class Main {
         Algorithms algo=new Algorithms();
         //algo.randomAssignement(map);
         //new DrawingPanel(map);
-        algo.genetic(map, 5, 2,2);//algo.genetic(map, population_size, tournament_size, number_of_parents);
-        
+        Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
+        new DrawingPanel(solution, "solution");
 
     }
 }
