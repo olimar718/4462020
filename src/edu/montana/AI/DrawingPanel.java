@@ -48,9 +48,9 @@ public class DrawingPanel extends JPanel{
     //     g.fillOval(region.x-radius, region.y-radius, radius*2, radius*2);
     // }
 
-    public DrawingPanel(Map map){
+    public DrawingPanel(Map map, String title){
         this.map = map;
-        JFrame frame = new JFrame("Map Drawing");
+        JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
         frame.setSize(500, 500);

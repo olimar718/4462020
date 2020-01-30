@@ -14,7 +14,7 @@ public class Map {
         this.regions = new Region[this.mapSize];
         this.connections = new ArrayList<>();
     }
-    public Map(int mapSize, Region[] regions, ArrayList<Connection> connections){
+    public Map(int mapSize, Region[] regions, ArrayList<Connection> connections){//clone constructor
         this.mapSize=mapSize;
         this.regions=regions;
         this.connections=connections;
