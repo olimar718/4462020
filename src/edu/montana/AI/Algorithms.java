@@ -119,21 +119,20 @@ public class Algorithms {
             population[i] = (Map)map.clone();
             randomAssignement(population[i]);
         }
-        for(int i = 0; i < population_size; i = i + 1){
-            System.out.println(population[i]);
-            new DrawingPanel(population[i]);
-        }
-        while (!(reached_goal)) {
+        while (!(reached_goal)) {//or limit exceeded
             //tournament selection
             Map[] parents = new Map[number_of_parents];
             for (int i = 0; i < number_of_parents; i = i + 1) {//selecting the parent via tournament_selection
-                Map[] tournament_contestant = new Map[tournament_size];
+                Map[] tournament_contestants = new Map[tournament_size];
                 for (int j = 0; j < tournament_size; j = j + 1) {//selecting the contestant
-                    tournament_contestant[j]=population[rand.nextInt(population_size - 1)];
+                    tournament_contestants[j]=population[rand.nextInt(population_size - 1)];
                 }
-                for (Map map2 : tournament_contestant) {
-                    
-                    System.out.println("GOALLLLLLLLL "+map2.goal());
+                for (Map tournament_contestant : tournament_contestants) {
+                    Map winner = null;
+                    System.out.println("GOALLLLLLLLL ");
+                    // if(tournament_contestant.goal()>winner.goal()){
+
+                    // }
                     //new DrawingPanel(map2);
                 }
                 try{
@@ -143,7 +142,6 @@ public class Algorithms {
                 }
             }
         }
-
         return map;
     }
 
