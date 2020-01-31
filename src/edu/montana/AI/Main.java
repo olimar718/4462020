@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         
         int regionIndex = 0;
-        int numberOfRegions = 5;//Shoud be defined by argument (String[] args)
+        int numberOfRegions = 50;//Shoud be defined by argument (String[] args)
         int size = 500;//Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -36,11 +36,23 @@ public class Main {
                 map.connections.add(map.connectRegion(region, closest));
             }
         }
+        new DrawingPanel(map, "problem");
         Algorithms algo=new Algorithms();
         algo.simpleBacktracking(map);
         //algo.randomAssignement(map);
         //new DrawingPanel(map);
         // Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
+        // new DrawingPanel(solution, "solution");
+
+        //simple backtracking
+        // algo.simpleBacktracking(map);
+        
+        //simulated_annealing
+        Map solution=algo.simulated_annealing(map);
+        new DrawingPanel(solution, "solution");
+
+        //genetic
+        // Map solution = algo.genetic(map, 20, 10,2,50,1000);//algo.genetic(map, population_size, tournament_size, number_of_parents, 1/mutation_probability, number_of_generation_limit);
         // new DrawingPanel(solution, "solution");
 
     }

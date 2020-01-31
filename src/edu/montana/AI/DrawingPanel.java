@@ -9,9 +9,10 @@ import java.util.concurrent.TimeUnit;
 public class DrawingPanel extends JPanel {
     int radius = 5;
     Map map;
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        for (Region region : map.regions) {
+    static final long serialVersionUID=0;//remove warning
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);    
+        for(Region region: map.regions){
             switch (region.color) {
             case "red":
                 g.setColor(Color.red);
