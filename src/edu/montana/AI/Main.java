@@ -37,11 +37,11 @@ public class Main {
             }
         }
         Algorithms algo=new Algorithms();
-        // algo.simpleBacktracking(map);
+        algo.simpleBacktracking(map);
         //algo.randomAssignement(map);
         //new DrawingPanel(map);
-        Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
-        new DrawingPanel(solution, "solution");
+        // Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
+        // new DrawingPanel(solution, "solution");
 
     }
 }
