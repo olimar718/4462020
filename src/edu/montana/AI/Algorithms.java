@@ -101,10 +101,10 @@ public class Algorithms {
 
     public Map simpleBacktracking(Map map) {
         int numColors = 3;
-        if(!graphColoring(map, numColors, 0, map.regions[0])){
+        if (!graphColoring(map, numColors, 0, map.regions[0])) {
             System.out.println("Solution doesn't exist");
         }
-        new DrawingPanel(map);
+        new DrawingPanel(map, "simpleBacktracking");
         System.out.println("Drew simpleBacktracking");
         return map;
     }
@@ -140,13 +140,8 @@ public class Algorithms {
                 for (Map tournament_contestant : tournament_contestants) {
                     int current_contest_goal = tournament_contestant.goal();
                     System.out.println(current_contest_goal);
-                    new DrawingPanel(tournament_contestant, "Contestant");
-                    try {
-                        Thread.sleep(900000000);
-                    } catch (Exception e) {
+                    // new DrawingPanel(tournament_contestant, "Contestant");
 
-                    }
-                    
                     if (current_contest_goal == 0) {// the goal has been reached so we return
                         reached_goal = Boolean.TRUE;
                         return (Map) tournament_contestant.clone();
@@ -162,6 +157,11 @@ public class Algorithms {
             // for(Map parent : parents){
             // new DrawingPanel(parent, "parent");
             // }
+            // try {
+            //     Thread.sleep(3000);
+            // } catch (Exception e) {
+            // }
+            //new DrawingPanel((Map) genetic_recombine(parents).clone(), "new generation base"); //debug
             for (int i = 0; i < population_size; i = i + 1) {
                 population[i] = (Map) genetic_recombine(parents).clone();
             }
@@ -226,14 +226,14 @@ public class Algorithms {
     }
 
     public boolean graphColoring(Map map, int numColors, int colored, Region region) {
-        if(map.mapSize == colored){
+        if (map.mapSize == colored) {
             return true;
         }
 
-        for (int i=0; i < numColors; i++){
-            if(colorCheck(colored, map, region)){
-                region.color = "red"; //need to change to be dynamic
-                if(graphColoring(map, numColors, colored+1, region)){
+        for (int i = 0; i < numColors; i++) {
+            if (colorCheck(colored, map, region)) {
+                region.color = "red"; // need to change to be dynamic
+                if (graphColoring(map, numColors, colored + 1, region)) {
                     return true;
                 }
                 region.color = "";
@@ -244,9 +244,10 @@ public class Algorithms {
     }
 
     public boolean colorCheck(int colored, Map map, Region region) {
-        //return true if surrounding colors are a different color or not yet assigned a color
+        // return true if surrounding colors are a different color or not yet assigned a
+        // color
         for (int i = 0; i < map.mapSize; i++) {
-            if(map.regions[i].color.equals(region.color)){
+            if (map.regions[i].color.equals(region.color)) {
                 return false;
             }
         }

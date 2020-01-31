@@ -88,8 +88,19 @@ public class Map {
                 new_map_regions[i]=(Region) this.regions[i].clone();
                 //System.out.println(this.regions[i].clone().getClass());
             }
+            // workaround to reattach regions to connection after the clone
             map = new Map(this.mapSize, new_map_regions, new_map_connection );
+            for (Connection connection : map.connections) {
+                for (Region region : map.regions) {
+                    if (region.regionId == connection.connectedRegion1.regionId) {
+                        connection.connectedRegion1 = region;
+                    }
+                    if (region.regionId == connection.connectedRegion2.regionId) {
+                        connection.connectedRegion2 = region;
+                    }
+                }
 
+            }
         }
         return map;
     }

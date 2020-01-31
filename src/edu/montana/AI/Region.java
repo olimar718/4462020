@@ -50,8 +50,6 @@ public class Region {
                 }
             }
         }
-        //System.err.println("Region " + this.regionId + " coordinate " + this.x + " " + this.y + " is closest to Region " + currentClosest.regionId + " coordinate " + currentClosest.x + " " + currentClosest.y);//debug
-        System.out.flush();
         return currentClosest;
     }
 

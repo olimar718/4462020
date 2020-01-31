@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         
         int regionIndex = 0;
-        int numberOfRegions = 5;//Shoud be defined by argument (String[] args)
+        int numberOfRegions = 20;//Shoud be defined by argument (String[] args)
         int size = 500;//Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -40,7 +40,7 @@ public class Main {
         // algo.simpleBacktracking(map);
         //algo.randomAssignement(map);
         //new DrawingPanel(map);
-        Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
+        Map solution = algo.genetic(map, 100, 100,2,50);//algo.genetic(map, population_size, tournament_size, number_of_parents, 1/mutation_probability);
         new DrawingPanel(solution, "solution");
 
     }
