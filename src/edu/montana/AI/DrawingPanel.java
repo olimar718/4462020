@@ -53,7 +53,7 @@ public class DrawingPanel extends JPanel {
         JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(this);
-        frame.setSize(500, 500);
+        frame.setSize(550, 550);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

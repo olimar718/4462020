@@ -36,9 +36,11 @@ public class Main {
                 map.connections.add(map.connectRegion(region, closest));
             }
         }
-        new DrawingPanel(map, "problem");
+
+        new DrawingPanel((Map)map.clone(), "problem");
         Algorithms algo=new Algorithms();
-        algo.simpleBacktracking(map);
+        Map backtrackingSolution = algo.simpleBacktracking(map);
+        new DrawingPanel(backtrackingSolution, "Backtracking");
         //algo.randomAssignement(map);
         //new DrawingPanel(map);
         // Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
@@ -48,10 +50,10 @@ public class Main {
         // algo.simpleBacktracking(map);
         
         //simulated_annealing
-        Map solution=algo.simulated_annealing(map);
-        new DrawingPanel(solution, "solution");
+        // Map solution=algo.simulated_annealing(map, 100, 0.9);//simulated_annealing(Map map, int initial_temperature, short annealing_factor)
+        // new DrawingPanel(solution, "solution");
         //genetic
-        // Map solution = algo.genetic(map, 1000, 1000,2,50,1000);//algo.genetic(map, population_size, tournament_size, number_of_parents, 1/mutation_probability, number_of_generation_limit);
+        // Map solution = algo.genetic(map, 100, 50,2,50,50);//algo.genetic(map, population_size, tournament_size, number_of_parents, 1/mutation_probability, number_of_generation_limit);
         // new DrawingPanel(solution, "solution");
 
     }

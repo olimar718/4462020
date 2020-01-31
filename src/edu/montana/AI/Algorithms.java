@@ -6,6 +6,9 @@ import java.util.Random;
 import java.lang.Thread;
 
 public class Algorithms {
+    String[] colors = { "red", "green", "blue", "yellow" };
+    int colors1[];
+
     public Algorithms() {
 
     }
@@ -100,18 +103,37 @@ public class Algorithms {
         return map;
     }
 
-<<<<<<< HEAD
     protected Map simpleBacktracking(Map map) {
-=======
-    public Map simpleBacktracking(Map map) {
         int graph[][]= new int[map.mapSize][map.mapSize];
         graph = makeAdjacent(map, graph);
-        int colors[] = new int[map.mapSize];
->>>>>>> 8fb746d2e57ddc0882eb909ec2e5e91d1af1cae4
+        colors1 = new int[map.mapSize];
         int numColors = 3;
-        colors = graphColoring(graph,colors,numColors,0);
-        System.out.println("Colors " + Arrays.toString(colors));
-        new DrawingPanel(map, "simpleBacktracking");
+        if(!(graphColoring(graph,colors1,numColors,0))){
+            System.out.println("No 3 color");
+            numColors = 4;
+            graphColoring(graph, colors1, numColors, 0);
+        }
+        String colorName[] = new String[colors1.length];
+        for(int i =0; i<colors1.length;i++){
+            switch(colors1[i]){
+                case 1:
+                    colorName[i] = "red";
+                    break;
+                case 2:
+                    colorName[i] = "green";
+                    break;
+                case 3:
+                    colorName[i] = "blue";
+                    break;
+                case 4:
+                    colorName[i] = "yellow";
+                    break;
+                default:
+                    break;
+            }
+            map.regions[i].color = colorName[i];
+        }
+        // new DrawingPanel(map, "simpleBacktracking");
         return map;
     }
 
@@ -120,38 +142,92 @@ public class Algorithms {
         return map;
     }
 
-    protected Map simulated_annealing(Map map) {
-        Random rand= new Random();
-        Boolean reached_goal=Boolean.FALSE;
+    protected Map simulated_annealing(Map map, int initial_temperature, double annealing_factor) {
+        Random rand = new Random();
+        Boolean reached_goal = Boolean.FALSE;
         randomAssignement(map);
-        int step_count=0;
-        int temperature=100;
-        while(!(reached_goal)){
-            step_count = step_count + 1 ;
+        int step_count = 0;
+        double temperature = initial_temperature;
+        while (!(reached_goal)) {
+            temperature = simulated_annealing_schedule(step_count, annealing_factor, initial_temperature);
+            System.out.println(temperature);
+            step_count = step_count + 1;
+
             rand.setSeed(System.nanoTime());
-            map.performance=map.goal();
-            System.out.println(map.performance);
-            new DrawingPanel(map, "simulated annealing");     
+            map.performance = map.goal();
+            System.out.println("performance " + map.performance);
             ArrayList<Connection> incorrect_connection = new ArrayList<>();
             for (Connection connection : map.connections) {
-                if(!(connection.connectionCorrect())){
+                if (!(connection.connectionCorrect())) {
                     incorrect_connection.add(connection);
                 }
             }
-            Connection c=incorrect_connection.get(rand.nextInt(incorrect_connection.size()));
+            Connection selected_connection = incorrect_connection.get(rand.nextInt(incorrect_connection.size()));
+            
+            String possible_colors[] = new String[3];// only 3 other possible color
+            int possible_color_index = 0;
+            Map neighbour_states[] = new Map[3];
+            int neighbour_states_index = 0;
+            if (rand.nextBoolean()) {// every other time we take etheir the first connection or the second
 
-            try {
-                Thread.sleep(1000000000);
-            } catch (Exception e) {
-                //TODO: handle exception
+                for (String color : colors) {
+                    if (!(selected_connection.connectedRegion1.color.equals(color))) {
+                        possible_colors[possible_color_index] = color;
+                        possible_color_index = possible_color_index + 1;
+                    }
+
+                }
+                for (String possible_color : possible_colors) {
+                    selected_connection.connectedRegion1.color = possible_color;
+                    map.performance = map.goal();
+                    neighbour_states[neighbour_states_index] = (Map) map.clone();
+                    neighbour_states_index = neighbour_states_index + 1;
+                }
+
+            } else {
+                // selected_connection.connectedRegion2
+                for (String color : colors) {
+                    if (!(selected_connection.connectedRegion2.color.equals(color))) {
+                        possible_colors[possible_color_index] = color;
+                        possible_color_index = possible_color_index + 1;
+                    }
+
+                }
+                for (String possible_color : possible_colors) {
+                    selected_connection.connectedRegion2.color = possible_color;
+                    map.performance = map.goal();
+                    neighbour_states[neighbour_states_index] = (Map) map.clone();
+                    neighbour_states_index = neighbour_states_index + 1;
+                }
+
             }
+            Map new_state = (Map) neighbour_states[0].clone();
+            for (Map neighbour : neighbour_states) {
+                if(new_state.performance> neighbour.performance){
+                    new_state = neighbour;
+                }
+            }
+            // if(old_map.goal()){
+                
+            // }
+            map = (Map) new_state.clone();
+            System.out.println("performance new map "+map.performance);
+            if(map.performance==0){
+                reached_goal=Boolean.TRUE;
+                break;
+            }
+            // try {
+            //     Thread.sleep(1000000000);
+            // } catch (Exception e) {
+            //     // TODO: handle exception
+            // }
         }
+
         return map;
     }
-    private int simulated_annealing_schedule(int step_count, double annealing_factor, int initial_temperature){
-        
 
-        return step_count;
+    private double simulated_annealing_schedule(int step_count, double annealing_factor, int initial_temperature) {
+        return ((initial_temperature * annealing_factor) / (annealing_factor + step_count));
     }
 
     protected Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
@@ -245,11 +321,10 @@ public class Algorithms {
     }
 
     private Map genetic_mutate(Map map, int mutation_probability) {
-        String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
         for (Region region : map.regions) {
             rand.setSeed(System.nanoTime());
-            if (rand.nextInt(mutation_probability) == 0) {
+            if (rand.nextInt(mutation_probability) == 0) {// TODO mutate only in different color
                 region.color = colors[rand.nextInt(4)];// TODO gaussian / normal distribution ?
             }
         }
@@ -257,7 +332,6 @@ public class Algorithms {
     }
 
     private void randomAssignement(Map map) {
-        String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
         rand.setSeed(System.nanoTime());
         for (Region region : map.regions) {
@@ -265,8 +339,8 @@ public class Algorithms {
         }
     }
 
-    //create adjacency matrix for map based on connected regions
-    //1 = regions are connected
+    // create adjacency matrix for map based on connected regions
+    // 1 = regions are connected
     public int[][] makeAdjacent(Map map, int[][] graph) {
         for (Connection connection : map.connections) {
             int i = connection.connectedRegion1.regionId;
@@ -278,40 +352,31 @@ public class Algorithms {
         return graph;
     }
 
-    public int[] graphColoring(int[][] graph, int[] colors, int numColors, int i) {
-        while(true){
-            colors[i] = assignColor(i, colors, graph);
-            if(colors[i] == 0){
-                return colors;
-            }
-            if(i== graph.length){
-                System.out.println(Arrays.toString(colors));
-                return colors;
-            }
-            else{
-                graphColoring(graph, colors, numColors, i+1);
+    public boolean graphColoring(int[][] graph, int[] colors1, int numColors, int current) {
+        if (current == colors1.length) {
+            return true;
+        }
+
+        for (int i = 1; i <= numColors; i++) {
+            if (assignColor(current, colors1, graph, i, numColors)) {
+                colors1[current] = i;
+
+                if (graphColoring(graph, colors1, numColors, current + 1)) {
+                    return true;
+                }
+                colors1[current] = 0;
             }
         }
+        return false;
     }
 
-    public int assignColor(int i, int[] colors, int[][] graph) {
-        while(true){
-            int j;
-
-            colors[i] = colors[i]+1;
-            if(colors[i] == colors.length){
-                return 0;
-            }
-
-            for(j = 0; j < colors.length-1; j++){
-                if(graph[i][j] == 1 && colors[i] == colors[j] && i!=j){
-                    break;
-                }
-            }
-            if(j == colors.length){
-                return colors[i];
+    public boolean assignColor(int current, int[] colors1, int[][] graph, int i, int numColors) {
+        for (int j = 0; j < graph.length; j++) {
+            if (graph[current][j] == 1 && i == colors1[j]) {
+                return false;
             }
         }
+        return true;
     }
 
 }
