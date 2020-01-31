@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import java.util.concurrent.TimeUnit;
 
-public class DrawingPanel extends JPanel{
+public class DrawingPanel extends JPanel {
     int radius = 5;
     Map map;
     static final long serialVersionUID=0;//remove warning
@@ -13,21 +14,19 @@ public class DrawingPanel extends JPanel{
         super.paintComponent(g);    
         for(Region region: map.regions){
             switch (region.color) {
-                case "red":
+            case "red":
                 g.setColor(Color.red);
                 break;
-
-                case "green":
+            case "green":
                 g.setColor(Color.green);
                 break;
-                case "blue":
+            case "blue":
                 g.setColor(Color.blue);
                 break;
-                case "yellow":
+            case "yellow":
                 g.setColor(Color.orange);
                 break;
-            
-                default:
+            default:
                 break;
             }
             g.fillOval(region.x-radius, region.y-radius, radius*2, radius*2);

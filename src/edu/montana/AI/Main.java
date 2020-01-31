@@ -38,6 +38,11 @@ public class Main {
         }
         new DrawingPanel(map, "problem");
         Algorithms algo=new Algorithms();
+        algo.simpleBacktracking(map);
+        //algo.randomAssignement(map);
+        //new DrawingPanel(map);
+        // Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map, population_size, tournament_size, number_of_parents, mutation_probability);
+        // new DrawingPanel(solution, "solution");
 
         //simple backtracking
         // algo.simpleBacktracking(map);

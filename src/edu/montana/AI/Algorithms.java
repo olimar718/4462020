@@ -1,6 +1,7 @@
 package edu.montana.AI;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.lang.Thread;
 
@@ -99,13 +100,18 @@ public class Algorithms {
         return map;
     }
 
+<<<<<<< HEAD
     protected Map simpleBacktracking(Map map) {
+=======
+    public Map simpleBacktracking(Map map) {
+        int graph[][]= new int[map.mapSize][map.mapSize];
+        graph = makeAdjacent(map, graph);
+        int colors[] = new int[map.mapSize];
+>>>>>>> 8fb746d2e57ddc0882eb909ec2e5e91d1af1cae4
         int numColors = 3;
-        if (!graphColoring(map, numColors, 0, map.regions[0])) {
-            System.out.println("Solution doesn't exist");
-        }
+        colors = graphColoring(graph,colors,numColors,0);
+        System.out.println("Colors " + Arrays.toString(colors));
         new DrawingPanel(map, "simpleBacktracking");
-        System.out.println("Drew simpleBacktracking");
         return map;
     }
 
@@ -259,32 +265,53 @@ public class Algorithms {
         }
     }
 
-    public boolean graphColoring(Map map, int numColors, int colored, Region region) {
-        if (map.mapSize == colored) {
-            return true;
+    //create adjacency matrix for map based on connected regions
+    //1 = regions are connected
+    public int[][] makeAdjacent(Map map, int[][] graph) {
+        for (Connection connection : map.connections) {
+            int i = connection.connectedRegion1.regionId;
+            int j = connection.connectedRegion2.regionId;
+            graph[i][j] = 1;
+            graph[j][i] = 1;
         }
+        System.out.println("\n");
+        return graph;
+    }
 
-        for (int i = 0; i < numColors; i++) {
-            if (colorCheck(colored, map, region)) {
-                region.color = "red"; // need to change to be dynamic
-                if (graphColoring(map, numColors, colored + 1, region)) {
-                    return true;
+    public int[] graphColoring(int[][] graph, int[] colors, int numColors, int i) {
+        while(true){
+            colors[i] = assignColor(i, colors, graph);
+            if(colors[i] == 0){
+                return colors;
+            }
+            if(i== graph.length){
+                System.out.println(Arrays.toString(colors));
+                return colors;
+            }
+            else{
+                graphColoring(graph, colors, numColors, i+1);
+            }
+        }
+    }
+
+    public int assignColor(int i, int[] colors, int[][] graph) {
+        while(true){
+            int j;
+
+            colors[i] = colors[i]+1;
+            if(colors[i] == colors.length){
+                return 0;
+            }
+
+            for(j = 0; j < colors.length-1; j++){
+                if(graph[i][j] == 1 && colors[i] == colors[j] && i!=j){
+                    break;
                 }
-                region.color = "";
+            }
+            if(j == colors.length){
+                return colors[i];
             }
         }
-
-        return false;
     }
 
-    public boolean colorCheck(int colored, Map map, Region region) {
-        // return true if surrounding colors are a different color or not yet assigned a
-        // color
-        for (int i = 0; i < map.mapSize; i++) {
-            if (map.regions[i].color.equals(region.color)) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
