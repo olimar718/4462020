@@ -110,10 +110,33 @@ public class Algorithms {
     }
 
     public Map backtrackingForwardChecking(Map map) {
+
         return map;
     }
 
-    public Map mac(Map map) {
+    public Map simulated_annealing(Map map) {
+        Random rand= new Random();
+        Boolean reached_goal=Boolean.FALSE;
+        randomAssignement(map);
+        while(!(reached_goal)){
+            rand.setSeed(System.nanoTime());
+            map.performance=map.goal();
+            System.out.println(map.performance);
+            new DrawingPanel(map, "simulated annealing");     
+            ArrayList<Connection> incorrect_connection = new ArrayList<>();
+            for (Connection connection : map.connections) {
+                if(!(connection.connectionCorrect())){
+                    incorrect_connection.add(connection);
+                }
+            }
+            Connection c=incorrect_connection.get(rand.nextInt(incorrect_connection.size()));
+
+            try {
+                Thread.sleep(1000000000);
+            } catch (Exception e) {
+                //TODO: handle exception
+            }
+        }
         return map;
     }
 
@@ -137,15 +160,19 @@ public class Algorithms {
             System.out.println("Currently computing generation " + generation_count);
             // evaluate all the population, keep the best individual, return if a solution
             // has been found
+            Map best_of_generation = (Map)population[0].clone();
             for (Map individual : population) {
                 individual.performance = individual.goal();
                 if (individual.performance < current_best.performance) {
                     current_best = (Map) individual.clone();
                 }
+                if (individual.performance < best_of_generation.performance) {
+                    best_of_generation = (Map) individual.clone();
+                }
             }
-            
             System.out.println(
-                    "Best individual of generation " + generation_count + " score " + current_best.performance);
+                    "Current_best individual across all generation " + generation_count + " score " + current_best.performance);
+                    System.out.println("Best individual of generation "+ generation_count+" score "+best_of_generation.performance);
             if(current_best.performance == 0){
                 reached_goal = Boolean.TRUE;
                 return current_best;
@@ -163,8 +190,6 @@ public class Algorithms {
                 // run the tournament
                 Map winner = tournament_contestants[0];
                 for (Map tournament_contestant : tournament_contestants) {
-                    // new DrawingPanel(tournament_contestant, "Contestant");
-
                     if (tournament_contestant.performance < winner.performance) {
                         winner = tournament_contestant;
                     }
@@ -173,35 +198,15 @@ public class Algorithms {
                 parents[i] = (Map) winner.clone();
             }
             // recombine (crossover)
-            // for(Map parent : parents){
-            // new DrawingPanel(parent, "parent");
-            // }
-            // try {
-            // Thread.sleep(3000);
-            // } catch (Exception e) {
-            // }
-            // new DrawingPanel((Map) genetic_recombine(parents).clone(), "new generation
-            // base"); //debug
             for (int i = 0; i < population_size; i = i + 1) {
                 population[i] = (Map) genetic_recombine(parents).clone();
             }
-            // for(Map child : population){
-            // new DrawingPanel(child, "child");
-            // }
-
             // mutate
             for (Map child : population) {
                 genetic_mutate(child, mutation_probability);
-                // new DrawingPanel(child, "mutated");
             }
-
-            // try {
-            // Thread.sleep(900000000);
-            // } catch (Exception e) {
-
-            // }
         }
-        return map;
+        return current_best;
     }
 
     public Map genetic_recombine(Map[] maps) {
