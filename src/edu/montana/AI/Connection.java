@@ -6,13 +6,13 @@ public class Connection {
     public Region connectedRegion2;
 
 
-    public Connection(Boolean status, Region connectedRegion1, Region connectedRegion2) {
+    protected Connection(Boolean status, Region connectedRegion1, Region connectedRegion2) {
         this.status = status;
         this.connectedRegion1 = connectedRegion1;
         this.connectedRegion2 = connectedRegion2;
     }
 
-    public Boolean connectionCorrect(){
+    protected Boolean connectionCorrect(){
         //System.out.println(this.connectedRegion1.color +" "+this.connectedRegion2.color);//TODO empty color ????
         if (this.connectedRegion1.color.equals(this.connectedRegion2.color)||this.connectedRegion1.color.equals("")||this.connectedRegion2.color.equals("")){
             this.status=Boolean.FALSE;

@@ -9,7 +9,7 @@ public class Algorithms {
 
     }
 
-    public Map minConflict(Map map, String[] colors) {
+    protected Map minConflict(Map map, String[] colors) {
 
         // initial assignement
         // randomAssignement(map);
@@ -99,7 +99,7 @@ public class Algorithms {
         return map;
     }
 
-    public Map simpleBacktracking(Map map) {
+    protected Map simpleBacktracking(Map map) {
         int numColors = 3;
         if (!graphColoring(map, numColors, 0, map.regions[0])) {
             System.out.println("Solution doesn't exist");
@@ -109,16 +109,19 @@ public class Algorithms {
         return map;
     }
 
-    public Map backtrackingForwardChecking(Map map) {
+    protected Map backtrackingForwardChecking(Map map) {
 
         return map;
     }
 
-    public Map simulated_annealing(Map map) {
+    protected Map simulated_annealing(Map map) {
         Random rand= new Random();
         Boolean reached_goal=Boolean.FALSE;
         randomAssignement(map);
+        int step_count=0;
+        int temperature=100;
         while(!(reached_goal)){
+            step_count = step_count + 1 ;
             rand.setSeed(System.nanoTime());
             map.performance=map.goal();
             System.out.println(map.performance);
@@ -139,8 +142,13 @@ public class Algorithms {
         }
         return map;
     }
+    private int simulated_annealing_schedule(int step_count, double annealing_factor, int initial_temperature){
+        
 
-    public Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
+        return step_count;
+    }
+
+    protected Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
             int mutation_probability, int number_of_generation_limit) {
 
         Map[] population = new Map[population_size];
@@ -160,7 +168,7 @@ public class Algorithms {
             System.out.println("Currently computing generation " + generation_count);
             // evaluate all the population, keep the best individual, return if a solution
             // has been found
-            Map best_of_generation = (Map)population[0].clone();
+            Map best_of_generation = (Map) population[0].clone();
             for (Map individual : population) {
                 individual.performance = individual.goal();
                 if (individual.performance < current_best.performance) {
@@ -170,10 +178,11 @@ public class Algorithms {
                     best_of_generation = (Map) individual.clone();
                 }
             }
+            System.out.println("Current_best individual across all generation " + generation_count + " score "
+                    + current_best.performance);
             System.out.println(
-                    "Current_best individual across all generation " + generation_count + " score " + current_best.performance);
-                    System.out.println("Best individual of generation "+ generation_count+" score "+best_of_generation.performance);
-            if(current_best.performance == 0){
+                    "Best individual of generation " + generation_count + " score " + best_of_generation.performance);
+            if (current_best.performance == 0) {
                 reached_goal = Boolean.TRUE;
                 return current_best;
             }
@@ -209,7 +218,7 @@ public class Algorithms {
         return current_best;
     }
 
-    public Map genetic_recombine(Map[] maps) {
+    private Map genetic_recombine(Map[] maps) {
         Random rand = new Random();
         Map recombined = (Map) maps[0].clone();
         for (Region recombined_region : recombined.regions) {
@@ -229,7 +238,7 @@ public class Algorithms {
         return recombined;
     }
 
-    public Map genetic_mutate(Map map, int mutation_probability) {
+    private Map genetic_mutate(Map map, int mutation_probability) {
         String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
         for (Region region : map.regions) {
@@ -241,7 +250,7 @@ public class Algorithms {
         return map;
     }
 
-    public void randomAssignement(Map map) {
+    private void randomAssignement(Map map) {
         String[] colors = { "red", "green", "blue", "yellow" };
         Random rand = new Random();
         rand.setSeed(System.nanoTime());

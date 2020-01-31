@@ -7,14 +7,14 @@ public class Region {
     public int y;
     public int regionId;
 
-    public Region(String color, int x, int y, int regionId) {
+    protected Region(String color, int x, int y, int regionId) {
         this.color = color;
         this.x = x;
         this.y = y;
         this.regionId = regionId;
     }
 
-    public Region findClosest_connectable(Map map) {
+    protected Region findClosest_connectable(Map map) {
         Region currentClosest = this;
         int distance = 250000;
         boolean no_connection_possible = false;
@@ -53,7 +53,7 @@ public class Region {
         return currentClosest;
     }
 
-    static boolean onSegment(Region p, Region q, Region r) 
+    protected static boolean onSegment(Region p, Region q, Region r) 
 { 
     if (q.x <= Math.max(p.x, r.x) && q.x >= Math.min(p.x, r.x) && 
         q.y <= Math.max(p.y, r.y) && q.y >= Math.min(p.y, r.y)) 
@@ -62,7 +62,7 @@ public class Region {
     return false; 
 } 
 
-    public int orientation(Region p, Region q, Region r) 
+    protected int orientation(Region p, Region q, Region r) 
 { 
     // See https://www.geeksforgeeks.org/orientation-3-ordered-points/ 
     // for details of below formula. 
@@ -74,7 +74,7 @@ public class Region {
     return (val > 0)? 1: 2; // clock or counterclock wise 
 } 
 
-    public boolean doIntersect(Region p1, Region q1, Region p2, Region q2) 
+    protected boolean doIntersect(Region p1, Region q1, Region p2, Region q2) 
 { 
     // Find the four orientations needed for general and 
     // special cases 

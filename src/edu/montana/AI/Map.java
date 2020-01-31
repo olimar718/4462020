@@ -8,20 +8,20 @@ public class Map {
     ArrayList<Connection> connections;
     Region[] regions;
     int performance;
-    public Map(int numberOfRegions) {
+    protected Map(int numberOfRegions) {
 
         this.mapSize = numberOfRegions;
         this.regions = new Region[this.mapSize];
         this.connections = new ArrayList<>();
     }
-    public Map(int mapSize, Region[] regions, ArrayList<Connection> connections, int performance){//clone constructor
+    protected Map(int mapSize, Region[] regions, ArrayList<Connection> connections, int performance){//clone constructor
         this.mapSize=mapSize;
         this.regions=regions;
         this.connections=connections;
         this.performance=performance;
     }
 
-    public int goal() {
+    protected int goal() {
         int number_of_incorrect=0;
         for (Connection connection : this.connections) {
             if(!(connection.connectionCorrect())){
@@ -31,11 +31,11 @@ public class Map {
         return number_of_incorrect;
     }
 
-    public Connection connectRegion(Region region1, Region region2) {
+    protected Connection connectRegion(Region region1, Region region2) {
         return new Connection(Boolean.FALSE, region1, region2);
     }
 
-    public void colorRegion(Region region, String[] possibleColors) {
+    protected void colorRegion(Region region, String[] possibleColors) {
 
         /** change how list works */
 

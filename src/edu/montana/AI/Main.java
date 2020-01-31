@@ -45,9 +45,8 @@ public class Main {
         //simulated_annealing
         Map solution=algo.simulated_annealing(map);
         new DrawingPanel(solution, "solution");
-
         //genetic
-        // Map solution = algo.genetic(map, 20, 10,2,50,1000);//algo.genetic(map, population_size, tournament_size, number_of_parents, 1/mutation_probability, number_of_generation_limit);
+        // Map solution = algo.genetic(map, 1000, 1000,2,50,1000);//algo.genetic(map, population_size, tournament_size, number_of_parents, 1/mutation_probability, number_of_generation_limit);
         // new DrawingPanel(solution, "solution");
 
     }
