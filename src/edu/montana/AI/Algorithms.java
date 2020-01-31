@@ -118,17 +118,42 @@ public class Algorithms {
     }
 
     public Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
-            int mutation_probability) {
+            int mutation_probability, int number_of_generation_limit) {
+
         Map[] population = new Map[population_size];
         Boolean reached_goal = Boolean.FALSE;
         Random rand = new Random();
         // generates the base population of population_size randomly
         for (int i = 0; i < population_size; i = i + 1) {
-            population[i] = (Map) map.clone();
+            population[i] = (Map) map.clone();// clone to have a separate instance of the map
             randomAssignement(population[i]);
         }
-        while (!(reached_goal)) {// or limit exceeded
-            // tournament selection
+        // start the genetic algorithm
+        int generation_count = 0;
+        population[0].performance = population[0].goal();
+        Map current_best = (Map) population[0].clone();
+        while (!(reached_goal)) {
+            generation_count = generation_count + 1;
+            System.out.println("Currently computing generation " + generation_count);
+            // evaluate all the population, keep the best individual, return if a solution
+            // has been found
+            for (Map individual : population) {
+                individual.performance = individual.goal();
+                if (individual.performance < current_best.performance) {
+                    current_best = (Map) individual.clone();
+                }
+            }
+            
+            System.out.println(
+                    "Best individual of generation " + generation_count + " score " + current_best.performance);
+            if(current_best.performance == 0){
+                reached_goal = Boolean.TRUE;
+                return current_best;
+            }
+            if (generation_count >= number_of_generation_limit) {
+                System.err.println("Number of generation limit was reached, returning current best solution");
+                return current_best;
+            }
             Map[] parents = new Map[number_of_parents];
             for (int i = 0; i < number_of_parents; i = i + 1) {// selecting the parent via tournament_selection
                 Map[] tournament_contestants = new Map[tournament_size];
@@ -138,15 +163,9 @@ public class Algorithms {
                 // run the tournament
                 Map winner = tournament_contestants[0];
                 for (Map tournament_contestant : tournament_contestants) {
-                    int current_contest_goal = tournament_contestant.goal();
-                    System.out.println(current_contest_goal);
                     // new DrawingPanel(tournament_contestant, "Contestant");
 
-                    if (current_contest_goal == 0) {// the goal has been reached so we return
-                        reached_goal = Boolean.TRUE;
-                        return (Map) tournament_contestant.clone();
-                    }
-                    if (current_contest_goal < winner.goal()) {
+                    if (tournament_contestant.performance < winner.performance) {
                         winner = tournament_contestant;
                     }
                 }
@@ -158,10 +177,11 @@ public class Algorithms {
             // new DrawingPanel(parent, "parent");
             // }
             // try {
-            //     Thread.sleep(3000);
+            // Thread.sleep(3000);
             // } catch (Exception e) {
             // }
-            //new DrawingPanel((Map) genetic_recombine(parents).clone(), "new generation base"); //debug
+            // new DrawingPanel((Map) genetic_recombine(parents).clone(), "new generation
+            // base"); //debug
             for (int i = 0; i < population_size; i = i + 1) {
                 population[i] = (Map) genetic_recombine(parents).clone();
             }

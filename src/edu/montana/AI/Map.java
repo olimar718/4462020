@@ -7,17 +7,18 @@ public class Map {
     int mapSize;
     ArrayList<Connection> connections;
     Region[] regions;
-
+    int performance;
     public Map(int numberOfRegions) {
 
         this.mapSize = numberOfRegions;
         this.regions = new Region[this.mapSize];
         this.connections = new ArrayList<>();
     }
-    public Map(int mapSize, Region[] regions, ArrayList<Connection> connections){//clone constructor
+    public Map(int mapSize, Region[] regions, ArrayList<Connection> connections, int performance){//clone constructor
         this.mapSize=mapSize;
         this.regions=regions;
         this.connections=connections;
+        this.performance=performance;
     }
 
     public int goal() {
@@ -89,7 +90,7 @@ public class Map {
                 //System.out.println(this.regions[i].clone().getClass());
             }
             // workaround to reattach regions to connection after the clone
-            map = new Map(this.mapSize, new_map_regions, new_map_connection );
+            map = new Map(this.mapSize, new_map_regions, new_map_connection, this.performance);
             for (Connection connection : map.connections) {
                 for (Region region : map.regions) {
                     if (region.regionId == connection.connectedRegion1.regionId) {

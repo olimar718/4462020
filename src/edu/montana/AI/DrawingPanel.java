@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 public class DrawingPanel extends JPanel{
     int radius = 5;
     Map map;
+    static final long serialVersionUID=0;//remove warning
     public void paintComponent(Graphics g){
         super.paintComponent(g);    
         for(Region region: map.regions){
