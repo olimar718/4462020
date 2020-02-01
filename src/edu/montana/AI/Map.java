@@ -64,7 +64,7 @@ public class Map {
         }
         if (blue_present && red_present && green_present && yellow_present) {//if all the color are present, apply a penality to the goal
             number_of_incorrect= number_of_incorrect+  Math.round((float)(this.mapSize*four_color_penality));
-            System.out.println("The map is using four colors");
+            //System.out.println("The map is using four colors");
         }
     }
         return number_of_incorrect;
