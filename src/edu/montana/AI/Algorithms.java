@@ -181,9 +181,9 @@ public class Algorithms {
         if (map.performance == 0) {
             reached_goal = Boolean.TRUE;
         }
-        while (!(reached_goal) || temperature > 0) {
+        while (!(reached_goal) && temperature > 0.1) {
             temperature = simulated_annealing_schedule(step_count, annealing_factor, initial_temperature);
-            System.out.println(temperature);
+            System.out.println("Current temperature : " + temperature);
             step_count = step_count + 1;
             rand.setSeed(System.nanoTime());
             // System.out.println("performance " + map.performance);
@@ -233,7 +233,10 @@ public class Algorithms {
             }
             if (new_state.performance > old_state.performance) {
                 // System.out.println("previous state better");
-                double probability = Math.pow(((Double) Math.E), (-(new_state.performance / temperature)));//Boltzman distribution using the temperature
+                double probability = Math.pow(((Double) Math.E), (-(new_state.performance / temperature)));// Boltzman
+                                                                                                           // distribution
+                                                                                                           // using the
+                                                                                                           // temperature
                 System.out.println(probability);
                 if (Math.random() > probability) {
                     System.out.println("accepted worst state");
@@ -252,7 +255,7 @@ public class Algorithms {
             }
 
         }
-
+        System.out.println("Metric, number of step :  " + step_count);
         return map;
     }
 
@@ -297,8 +300,6 @@ public class Algorithms {
         while (!(reached_goal)) {// main loop of the method.
             generation_count = generation_count + 1;
             System.out.println("Currently computing generation " + generation_count);
-            // evaluate all the population, keep the best individual, return if a solution
-            // has been found
             Map best_of_generation = (Map) population[0].clone();// this variable holds the best individual of the
                                                                  // current generation.
             for (Map individual : population) {// finds the best of the generation and if applicable the best of all
@@ -311,16 +312,18 @@ public class Algorithms {
                     best_of_generation = (Map) individual.clone();
                 }
             }
-            System.out.println("Current_best individual across all generation " + generation_count + " score "
-                    + current_best.performance);
+            System.out.println("Current_best individual across all generation " + " score " + current_best.performance);
             System.out.println(
                     "Best individual of generation " + generation_count + " score " + best_of_generation.performance);
             if (current_best.performance == 0) {
                 reached_goal = Boolean.TRUE;
+                System.out.println("Found consistent solution, returning");
+                System.out.println("Metric, number of genereation :  " + generation_count);
                 return current_best;
             }
             if (generation_count >= number_of_generation_limit) {
                 System.err.println("Number of generation limit was reached, returning current best solution");
+                System.out.println("Metric, number of genereation :  " + generation_count);
                 return current_best;
             }
             Map[] parents = new Map[number_of_parents];
@@ -349,6 +352,7 @@ public class Algorithms {
                 genetic_mutate(child, mutation_probability);
             }
         }
+        System.out.println("Metric, number of genereation :  " + generation_count);
         return current_best;
     }
 

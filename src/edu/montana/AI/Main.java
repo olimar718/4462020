@@ -6,7 +6,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         int regionIndex = 0;
-        int numberOfRegions = 20;// Shoud be defined by argument (String[] args)
+        int numberOfRegions = 10;// Shoud be defined by argument (String[] args)
         int size = 500;// Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -38,21 +38,23 @@ public class Main {
 
         new DrawingPanel((Map) map.clone(), "problem");
         Algorithms algo = new Algorithms();
+
+        //simplebacktracking
         // Map solution = algo.simpleBacktracking(map);
-        // algo.randomAssignement(map);
-        // new DrawingPanel(map);
-        // Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map,
-        // population_size, tournament_size, number_of_parents, mutation_probability);
-        // simple backtracking
-        // algo.simpleBacktracking(map);
+        
+        
+        
+        
+        
 
         // simulated_annealing
         //Map solution = algo.simulated_annealing(map, 100, 0.5, 0);// simulated_annealing(Map map, int
                                                                   // initial_temperature,
                                                                   // short annealing_factor, double four_color_penality)
+        
+        
         // genetic
 
-        // int inverse_mutation_probability = numberOfRegions;
         int population_size = 20;
         long tournament_size = Math.round(population_size * 0.25);
         long number_of_parents = Math.round(tournament_size * 0.25);
@@ -60,9 +62,8 @@ public class Main {
         int number_of_generation_limit=1000;
         double four_color_penality = 0;
 
-        Map solution = algo.genetic(map, population_size,(int)tournament_size,(int)number_of_parents,inverse_mutation_probability,number_of_generation_limit,four_color_penality);//four
-        // color penalty should be set to 0 for larges map if you want a correct
-        // coloring
+        Map solution = algo.genetic(map, population_size,(int)tournament_size,(int)number_of_parents,inverse_mutation_probability,number_of_generation_limit,four_color_penality);
+        //four color penalty should be set to 0 for larges map if you want a correct
 
         new DrawingPanel(solution, "solution");
 

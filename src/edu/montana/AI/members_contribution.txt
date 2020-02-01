@@ -1,0 +1,25 @@
+Benjamin Cathelineau :
+Algorithms.genetic
+Algorithms.genetic_recombine
+Algorithms.genetic_mutate
+Algorithms.simulated_annealing
+Algorithms.simulated_annealing_schedule
+Algorithms.absent_color
+Algorithms.randomAssignement
+Map.clone
+Map.goal
+Connection.clone
+Region.clone
+Region.findClosest_connectable
+
+
+Bray Polk : 
+DrawingPanel.java
+Algorithms.graphColoring
+Algorithms.makeAdjacent
+Algorithms.assignColor
+Algorithms.simpleBacktracking
+Algorithms.simpleBacktracking
+
+
+geeeksforgeeks:
