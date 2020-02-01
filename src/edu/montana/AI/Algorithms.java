@@ -104,41 +104,68 @@ public class Algorithms {
     }
 
     protected Map simpleBacktracking(Map map) {
-        int graph[][]= new int[map.mapSize][map.mapSize];
+        int graph[][] = new int[map.mapSize][map.mapSize];
         graph = makeAdjacent(map, graph);
         colors1 = new int[map.mapSize];
         int numColors = 3;
-        if(!(graphColoring(graph,colors1,numColors,0))){
+        if (!(graphColoring(graph, colors1, numColors, 0))) {
             System.out.println("No 3 color");
             numColors = 4;
             graphColoring(graph, colors1, numColors, 0);
         }
         String colorName[] = new String[colors1.length];
-        for(int i =0; i<colors1.length;i++){
-            switch(colors1[i]){
-                case 1:
-                    colorName[i] = "red";
-                    break;
-                case 2:
-                    colorName[i] = "green";
-                    break;
-                case 3:
-                    colorName[i] = "blue";
-                    break;
-                case 4:
-                    colorName[i] = "yellow";
-                    break;
-                default:
-                    break;
+        for (int i = 0; i < colors1.length; i++) {
+            switch (colors1[i]) {
+            case 1:
+                colorName[i] = "red";
+                break;
+            case 2:
+                colorName[i] = "green";
+                break;
+            case 3:
+                colorName[i] = "blue";
+                break;
+            case 4:
+                colorName[i] = "yellow";
+                break;
+            default:
+                break;
             }
             map.regions[i].color = colorName[i];
         }
-        // new DrawingPanel(map, "simpleBacktracking");
         return map;
     }
 
     protected Map backtrackingForwardChecking(Map map) {
-
+        int graph[][] = new int[map.mapSize][map.mapSize];
+        graph = makeAdjacent(map, graph);
+        colors1 = new int[map.mapSize];
+        int numColors = 3;
+        if (!(graphColoring(graph, colors1, numColors, 0))) {
+            System.out.println("No 3 color");
+            numColors = 4;
+            graphColoring(graph, colors1, numColors, 0);
+        }
+        String colorName[] = new String[colors1.length];
+        for (int i = 0; i < colors1.length; i++) {
+            switch (colors1[i]) {
+            case 1:
+                colorName[i] = "red";
+                break;
+            case 2:
+                colorName[i] = "green";
+                break;
+            case 3:
+                colorName[i] = "blue";
+                break;
+            case 4:
+                colorName[i] = "yellow";
+                break;
+            default:
+                break;
+            }
+            map.regions[i].color = colorName[i];
+        }
         return map;
     }
 
@@ -163,20 +190,14 @@ public class Algorithms {
                 }
             }
             Connection selected_connection = incorrect_connection.get(rand.nextInt(incorrect_connection.size()));
-            
+            Map old_state = (Map) map.clone();
             String possible_colors[] = new String[3];// only 3 other possible color
             int possible_color_index = 0;
             Map neighbour_states[] = new Map[3];
             int neighbour_states_index = 0;
             if (rand.nextBoolean()) {// every other time we take etheir the first connection or the second
 
-                for (String color : colors) {
-                    if (!(selected_connection.connectedRegion1.color.equals(color))) {
-                        possible_colors[possible_color_index] = color;
-                        possible_color_index = possible_color_index + 1;
-                    }
-
-                }
+                possible_colors=absent_color(selected_connection.connectedRegion1);
                 for (String possible_color : possible_colors) {
                     selected_connection.connectedRegion1.color = possible_color;
                     map.performance = map.goal();
@@ -186,13 +207,7 @@ public class Algorithms {
 
             } else {
                 // selected_connection.connectedRegion2
-                for (String color : colors) {
-                    if (!(selected_connection.connectedRegion2.color.equals(color))) {
-                        possible_colors[possible_color_index] = color;
-                        possible_color_index = possible_color_index + 1;
-                    }
-
-                }
+                possible_colors=absent_color(selected_connection.connectedRegion2);
                 for (String possible_color : possible_colors) {
                     selected_connection.connectedRegion2.color = possible_color;
                     map.performance = map.goal();
@@ -203,24 +218,28 @@ public class Algorithms {
             }
             Map new_state = (Map) neighbour_states[0].clone();
             for (Map neighbour : neighbour_states) {
-                if(new_state.performance> neighbour.performance){
+                if (new_state.performance > neighbour.performance) {
                     new_state = neighbour;
                 }
             }
-            // if(old_map.goal()){
-                
-            // }
-            map = (Map) new_state.clone();
-            System.out.println("performance new map "+map.performance);
-            if(map.performance==0){
-                reached_goal=Boolean.TRUE;
+            if (new_state.performance > old_state.performance) {
+                System.out.println("previous state better");
+                double probability=Math.pow(((Double)Math.E),(-(new_state.performance/temperature)));
+                if(Math.random()>probability){
+                    map = (Map) new_state.clone();
+                }else{
+                    map = (Map) old_state.clone();
+                }
+            }else{
+                map = (Map) new_state.clone();
+            }
+            
+            System.out.println("performance new map " + map.performance);
+            if (map.performance == 0) {
+                reached_goal = Boolean.TRUE;
                 break;
             }
-            // try {
-            //     Thread.sleep(1000000000);
-            // } catch (Exception e) {
-            //     // TODO: handle exception
-            // }
+
         }
 
         return map;
@@ -231,27 +250,29 @@ public class Algorithms {
     }
 
     protected Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
-            int mutation_probability, int number_of_generation_limit) {
+            int mutation_probability, int number_of_generation_limit) {//Implementation of the genetic algorithms, with generational replacement, fixed population size and tournament selection. 
+
 
         Map[] population = new Map[population_size];
         Boolean reached_goal = Boolean.FALSE;
         Random rand = new Random();
         // generates the base population of population_size randomly
         for (int i = 0; i < population_size; i = i + 1) {
-            population[i] = (Map) map.clone();// clone to have a separate instance of the map
+            population[i] = (Map) map.clone();// clone to have a separate instance of the map, or else every member of the population will be overwriting the same map
             randomAssignement(population[i]);
         }
+
         // start the genetic algorithm
-        int generation_count = 0;
+        int generation_count = 0;//count the number of generation, is used to stop the algorithm after the maximum has been reached
         population[0].performance = population[0].goal();
-        Map current_best = (Map) population[0].clone();
-        while (!(reached_goal)) {
+        Map current_best = (Map) population[0].clone();//taking the first member at the start of the algorithm. This "variable" alway holds the best individual of all generation seen so far, so that it can be returned if the maximum number of generation is reached
+        while (!(reached_goal)) {//main loop of the method.
             generation_count = generation_count + 1;
             System.out.println("Currently computing generation " + generation_count);
             // evaluate all the population, keep the best individual, return if a solution
             // has been found
-            Map best_of_generation = (Map) population[0].clone();
-            for (Map individual : population) {
+            Map best_of_generation = (Map) population[0].clone();//this variable holds the best individual of the current generation.
+            for (Map individual : population) {//finds the best of the generation and if applicable the best of all generation.
                 individual.performance = individual.goal();
                 if (individual.performance < current_best.performance) {
                     current_best = (Map) individual.clone();
@@ -275,10 +296,10 @@ public class Algorithms {
             Map[] parents = new Map[number_of_parents];
             for (int i = 0; i < number_of_parents; i = i + 1) {// selecting the parent via tournament_selection
                 Map[] tournament_contestants = new Map[tournament_size];
-                for (int j = 0; j < tournament_size; j = j + 1) {// selecting the contestant
+                for (int j = 0; j < tournament_size; j = j + 1) {// selecting the contestant randomly within the population
                     tournament_contestants[j] = population[rand.nextInt(population_size - 1)];
                 }
-                // run the tournament
+                // runs the tournament
                 Map winner = tournament_contestants[0];
                 for (Map tournament_contestant : tournament_contestants) {
                     if (tournament_contestant.performance < winner.performance) {
@@ -300,38 +321,53 @@ public class Algorithms {
         return current_best;
     }
 
-    private Map genetic_recombine(Map[] maps) {
+    private Map genetic_recombine(Map[] maps) {//this method implement uniform crossover
         Random rand = new Random();
         Map recombined = (Map) maps[0].clone();
-        for (Region recombined_region : recombined.regions) {
-            String[] ordered_colors = new String[maps.length];
+        for (Region recombined_region : recombined.regions) {//goes trough all the region of the recombined child to color them randomly
+            String[] parent_colors = new String[maps.length];
             int i = 0;
-            for (Map map : maps) {
+            for (Map map : maps) {//finds the color of the parents region corresponding to the currently being recombined region
                 for (Region region : map.regions) {
                     if (region.regionId == recombined_region.regionId) {
-                        ordered_colors[i] = region.color;
+                        parent_colors[i] = region.color;
                         i = i + 1;
+                        break;
                     }
                 }
             }
             rand.setSeed(System.nanoTime());
-            recombined_region.color = ordered_colors[rand.nextInt(ordered_colors.length)];
+            recombined_region.color = parent_colors[rand.nextInt(parent_colors.length)];//select a color randomly within the parents.
         }
         return recombined;
     }
 
-    private Map genetic_mutate(Map map, int mutation_probability) {
+    private Map genetic_mutate(Map map, int mutation_probability) {//this method mutate the child.
         Random rand = new Random();
-        for (Region region : map.regions) {
+        for (Region region : map.regions) {//goes trough all the regions of the child
             rand.setSeed(System.nanoTime());
-            if (rand.nextInt(mutation_probability) == 0) {// TODO mutate only in different color
-                region.color = colors[rand.nextInt(4)];// TODO gaussian / normal distribution ?
+            if (rand.nextInt(mutation_probability) == 0) {//mutate with the probability. Only color that were not the region's color can be selected.
+                String[] possible_colors=absent_color(region);
+                region.color = possible_colors[rand.nextInt(3)];// TODO gaussian / normal distribution ?
             }
         }
         return map;
     }
+    private String[] absent_color(Region region){//return all possible color that are not the one of the region
+        String[] absent_color=new String[3];
+        int absent_color_index=0;
+        for (String color : colors) {
+            if (!(region.color.equals(color))) {
+                absent_color[absent_color_index] = color;
+                absent_color_index = absent_color_index + 1;
+            }
 
-    private void randomAssignement(Map map) {
+        }
+        return absent_color;
+    }
+
+
+    private void randomAssignement(Map map) {//color every region randomly.
         Random rand = new Random();
         rand.setSeed(System.nanoTime());
         for (Region region : map.regions) {
@@ -369,7 +405,7 @@ public class Algorithms {
         }
         return false;
     }
-
+    
     public boolean assignColor(int current, int[] colors1, int[][] graph, int i, int numColors) {
         for (int j = 0; j < graph.length; j++) {
             if (graph[current][j] == 1 && i == colors1[j]) {
