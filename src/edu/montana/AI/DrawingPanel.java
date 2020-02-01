@@ -24,7 +24,7 @@ public class DrawingPanel extends JPanel {
                 g.setColor(Color.blue);
                 break;
             case "yellow":
-                g.setColor(Color.orange);
+                g.setColor(Color.yellow);
                 break;
             default:
                 break;
