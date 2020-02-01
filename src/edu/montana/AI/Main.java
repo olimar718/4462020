@@ -6,7 +6,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         int regionIndex = 0;
-        int numberOfRegions = 30;// Shoud be defined by argument (String[] args)
+        int numberOfRegions = 6;// Shoud be defined by argument (String[] args)
         int size = 500;// Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -39,7 +39,8 @@ public class Main {
 
         new DrawingPanel((Map) map.clone(), "problem");
         Algorithms algo = new Algorithms();
-        // Map solution = algo.simpleBacktracking(map);
+        Map test = algo.simpleBacktracking(map);
+        Map solution = algo.backtrackingForwardChecking(map);
         // algo.randomAssignement(map);
         // new DrawingPanel(map);
         // Map solution = algo.genetic(map, 10, 5,2,20);//algo.genetic(map,
@@ -51,11 +52,11 @@ public class Main {
         //Map solution = algo.simulated_annealing(map, 100, 0.9);// simulated_annealing(Map map, int initial_temperature,
                                                                // short annealing_factor)
         // genetic
-        Map solution = algo.genetic(map, 20, 10,2,50,50);//algo.genetic(map,
+        // Map solution = algo.genetic(map, 20, 10,2,50,50);//algo.genetic(map,
         // population_size, tournament_size, number_of_parents, 1/mutation_probability,
         // number_of_generation_limit);
-
-        new DrawingPanel(solution, "solution");
+        
+        new DrawingPanel((Map) solution.clone(), "solution");
 
     }
 }
