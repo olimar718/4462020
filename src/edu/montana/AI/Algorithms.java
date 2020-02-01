@@ -169,7 +169,7 @@ public class Algorithms {
         return map;
     }
 
-    protected Map simulated_annealing(Map map, int initial_temperature, double annealing_factor) {
+    protected Map simulated_annealing(Map map, int initial_temperature, double annealing_factor, double four_color_penality) {
         Random rand = new Random();
         Boolean reached_goal = Boolean.FALSE;
         randomAssignement(map);
@@ -181,7 +181,7 @@ public class Algorithms {
             step_count = step_count + 1;
 
             rand.setSeed(System.nanoTime());
-            map.performance = map.goal();
+            map.performance = map.goal(four_color_penality);
             System.out.println("performance " + map.performance);
             ArrayList<Connection> incorrect_connection = new ArrayList<>();
             for (Connection connection : map.connections) {
@@ -199,7 +199,7 @@ public class Algorithms {
                 possible_colors=absent_color(selected_connection.connectedRegion1);
                 for (String possible_color : possible_colors) {
                     selected_connection.connectedRegion1.color = possible_color;
-                    map.performance = map.goal();
+                    map.performance = map.goal(four_color_penality);
                     neighbour_states[neighbour_states_index] = (Map) map.clone();
                     neighbour_states_index = neighbour_states_index + 1;
                 }
@@ -209,7 +209,7 @@ public class Algorithms {
                 possible_colors=absent_color(selected_connection.connectedRegion2);
                 for (String possible_color : possible_colors) {
                     selected_connection.connectedRegion2.color = possible_color;
-                    map.performance = map.goal();
+                    map.performance = map.goal(four_color_penality);
                     neighbour_states[neighbour_states_index] = (Map) map.clone();
                     neighbour_states_index = neighbour_states_index + 1;
                 }
@@ -248,8 +248,9 @@ public class Algorithms {
         return ((initial_temperature * annealing_factor) / (annealing_factor + step_count));
     }
 
+
     protected Map genetic(Map map, int population_size, int tournament_size, int number_of_parents,
-            int mutation_probability, int number_of_generation_limit) {//Implementation of the genetic algorithms, with generational replacement, fixed population size and tournament selection. 
+            int mutation_probability, int number_of_generation_limit, double four_color_penality) {//Implementation of the genetic algorithms, with generational replacement, fixed population size and tournament selection. Implements a tentative three coloring, if the map uses four colors, it gets a penality
 
 
         Map[] population = new Map[population_size];
@@ -263,7 +264,7 @@ public class Algorithms {
 
         // start the genetic algorithm
         int generation_count = 0;//count the number of generation, is used to stop the algorithm after the maximum has been reached
-        population[0].performance = population[0].goal();
+        population[0].performance = population[0].goal(four_color_penality);
         Map current_best = (Map) population[0].clone();//taking the first member at the start of the algorithm. This "variable" alway holds the best individual of all generation seen so far, so that it can be returned if the maximum number of generation is reached
         while (!(reached_goal)) {//main loop of the method.
             generation_count = generation_count + 1;
@@ -272,7 +273,7 @@ public class Algorithms {
             // has been found
             Map best_of_generation = (Map) population[0].clone();//this variable holds the best individual of the current generation.
             for (Map individual : population) {//finds the best of the generation and if applicable the best of all generation.
-                individual.performance = individual.goal();
+                individual.performance = individual.goal(four_color_penality);
                 if (individual.performance < current_best.performance) {
                     current_best = (Map) individual.clone();
                 }

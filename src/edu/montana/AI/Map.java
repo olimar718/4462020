@@ -26,15 +26,47 @@ public class Map {
         this.performance = performance;
     }
 
-    protected int goal() {// This a performance and goal function. It returns 0 if the variable
-                          // assignement is a complete and consistent solution. Otherwise, it returns the
-                          // number of constraint violation.
+    protected int goal(double four_color_penality) {// This a performance and goal function. It returns 0 if the variable
+        // assignement is a complete and consistent solution. Otherwise, it returns the
+        // number of constraint violation. If a map use four colors it gets an aditional
+        // penality.
         int number_of_incorrect = 0;
         for (Connection connection : this.connections) {
             if (!(connection.connectionCorrect())) {
                 number_of_incorrect = number_of_incorrect + 1;
             }
         }
+
+        Boolean blue_present = Boolean.FALSE;
+        Boolean red_present = Boolean.FALSE;
+        Boolean green_present = Boolean.FALSE;
+        Boolean yellow_present = Boolean.FALSE;
+        if (!(four_color_penality == 0)) {//skip the calculation if we don't want 3 coloring
+            
+        
+        for (Region region : this.regions) {
+            switch (region.color) {
+            case "blue":
+                blue_present = Boolean.TRUE;
+                break;
+            case "red":
+                red_present = Boolean.TRUE;
+                break;
+            case "green":
+                green_present = Boolean.TRUE;
+                break;
+            case "yellow":
+                yellow_present = Boolean.TRUE;
+                break;
+            default:
+                break;
+            }
+        }
+        if (blue_present && red_present && green_present && yellow_present) {//if all the color are present, apply a penality to the goal
+            number_of_incorrect= number_of_incorrect+  Math.round((float)(this.mapSize*four_color_penality));
+            System.out.println("The map is using four colors");
+        }
+    }
         return number_of_incorrect;
     }
 
