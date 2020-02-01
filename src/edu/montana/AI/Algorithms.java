@@ -192,7 +192,6 @@ public class Algorithms {
             Connection selected_connection = incorrect_connection.get(rand.nextInt(incorrect_connection.size()));
             Map old_state = (Map) map.clone();
             String possible_colors[] = new String[3];// only 3 other possible color
-            int possible_color_index = 0;
             Map neighbour_states[] = new Map[3];
             int neighbour_states_index = 0;
             if (rand.nextBoolean()) {// every other time we take etheir the first connection or the second
@@ -348,7 +347,7 @@ public class Algorithms {
             rand.setSeed(System.nanoTime());
             if (rand.nextInt(mutation_probability) == 0) {//mutate with the probability. Only color that were not the region's color can be selected.
                 String[] possible_colors=absent_color(region);
-                region.color = possible_colors[rand.nextInt(3)];// TODO gaussian / normal distribution ?
+                region.color = possible_colors[rand.nextInt(3)];
             }
         }
         return map;
@@ -357,7 +356,7 @@ public class Algorithms {
         String[] absent_color=new String[3];
         int absent_color_index=0;
         for (String color : colors) {
-            if (!(region.color.equals(color))) {
+            if (!(region.color.equals(color))) {//matching colors that are not present
                 absent_color[absent_color_index] = color;
                 absent_color_index = absent_color_index + 1;
             }
