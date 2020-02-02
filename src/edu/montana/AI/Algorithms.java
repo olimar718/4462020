@@ -29,7 +29,7 @@ public class Algorithms {
             graphColoring(graph, colors1, numColors, 0);
         }
         map = colorCorrection(graph, map);
-        System.out.println("Backtracking Metric: " + btMetric);
+        System.err.println(map.mapSize + ", " + btMetric);
         return map;
     }
 
@@ -49,7 +49,7 @@ public class Algorithms {
             graphColoringForwardCheck(graph, colors1, numColors, 0, colorOptions4);
         }
         map = colorCorrection(graph, map);
-        System.out.println("Forward Checking Metric: " + fcMetric);
+        System.err.println(map.mapSize + ", " + fcMetric);
         return map;
     }
 
@@ -69,7 +69,7 @@ public class Algorithms {
             graphColoringArc(graph, colors1, numColors, 0, colorOptions4);
         }
         map = colorCorrection(graph, map);
-        System.out.println("Arc Metric: " + arcMetric);
+        System.err.println(map.mapSize + ", " + arcMetric);
         return map;
     }
 
@@ -412,7 +412,7 @@ public class Algorithms {
                 colorOptions = forwardCheck(colorOptions, currentColor, current, graph);
                 colorOptions = arcCheck(colorOptions, currentColor, current, graph);
                 colors1[current] = currentColor;                
-                //System.out.println("Current Region: " + current + " Current Color: " + currentColor + " Options: " + Arrays.deepToString(colorOptions));
+                // System.out.println("arccccc check: " + current + " Current Color: " + currentColor + " Options: " + Arrays.deepToString(colorOptions));
                 if (colorCheck(colorOptions) && graphColoringArc(graph, colors1, numColors, current + 1, colorOptions)) {
                     arcMetric++;
                     return true;
@@ -448,25 +448,29 @@ public class Algorithms {
     public int[][] arcCheck(int[][] colorOptions, int currentColor, int current, int[][] graph) {
         //colorOptions[i] = graph[i];
         int tally = 0;
+        int temp = 0;
         for(int i = 0; i < colorOptions.length;i++){
             tally = 0;
+            temp = 0;
             for(int j = 0; j < colorOptions[0].length;j++){
                 if(colorOptions[i][j] == 0){
                     tally++;
                 }
                 else{
-                    int temp = colorOptions[i][j];
+                    temp = colorOptions[i][j];
                 }
             }
             if(tally == colorOptions[0].length-1){
                 //check consistency with surrounding regions
-                for(int k =0; k < graph.length;k++){
-                    for(int j = 0; j < graph[0].length;j++){
-                        if(graph[i][j] == 1){
-
+                for(int j = 0; j < graph[0].length;j++){
+                    if(graph[i][j] == 1){
+                        for(int k = 0; k < colorOptions[0].length; k++){
+                            if(colorOptions[j][k] == temp){
+                                colorOptions[j][k] = 0;
+                            }
                         }
                     }
-                }
+                }                
             }
         }        
         return colorOptions;
