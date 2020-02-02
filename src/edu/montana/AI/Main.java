@@ -16,11 +16,32 @@ public class Main {
         // Algorithm call
 
         // simplebacktracking
-        // Map test = algo.simpleBacktracking(map);
+        Map solution = map;
+        for (int i = 0; i < 3; i++) {
+            numberOfRegions = 10;
+            while (numberOfRegions <= 100) {
 
+                map = new Map(numberOfRegions);
+                map = map_generate(map, size);
+                if(numberOfRegions <=30){
+                    System.err.println("Simple");
+                    solution = algo.simpleBacktracking(map);
+                }
+                System.err.println("Forward");
+                solution = algo.backtrackingForwardChecking(map);
+                System.err.println("Arc");
+                solution = algo.backtrackingArc(map);
+                numberOfRegions = numberOfRegions + 10;
+            }
+            System.err.println("");
+        }
+        // Map test = algo.simpleBacktracking(map);
         // new DrawingPanel((Map)test.clone(), "backtrack");
 
-        // Map solution = algo.backtrackingForwardChecking(map);
+        // Map test1 = algo.backtrackingForwardChecking(map);
+        // new DrawingPanel((Map)test1.clone(), "backtrack");
+
+        // Map solution = algo.backtrackingArc(map);
 
         // simulated_annealing
         // Map solution = algo.simulated_annealing(map, 100, 0.5, 0);//
@@ -35,20 +56,22 @@ public class Main {
         long tournament_size = Math.round(population_size * 0.25);
         long number_of_parents = Math.round(tournament_size * 0.25);
         int inverse_mutation_probability = numberOfRegions;
-        int number_of_generation_limit = 200;
+        int number_of_generation_limit = 500;
         double four_color_penality = 0.1;
-        Map solution = map;
+        // Map solution = map;
+        // for(int i = 0; i < 3;i++){
+        //     numberOfRegions = 10;
+        //     while (numberOfRegions <= 100) {
 
-
+        //         map = new Map(numberOfRegions);
+        //         map = map_generate(map, size);
+        //         solution = algo.genetic(map, population_size, (int) tournament_size, (int) number_of_parents, inverse_mutation_probability, number_of_generation_limit, four_color_penality);
+    
+        //         numberOfRegions = numberOfRegions + 10;
+        //     }
+        // }
         
-        while (numberOfRegions <= 100) {
-
-            map = new Map(numberOfRegions);
-            map = map_generate(map, size);
-            solution = algo.simulated_annealing(map, 100, 0.5, four_color_penality);
-            numberOfRegions = numberOfRegions + 10;
-        }
-        //new DrawingPanel(solution, "solution");
+        new DrawingPanel(solution, "solution");
 
 
     }
