@@ -6,7 +6,7 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         int regionIndex = 0;
-        int numberOfRegions = 50;// Shoud be defined by argument (String[] args)
+        int numberOfRegions = 30;// Shoud be defined by argument (String[] args)
         int size = 500;// Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
 
@@ -40,11 +40,11 @@ public class Main {
         Algorithms algo = new Algorithms();
 
         //simplebacktracking
-        Map test = algo.simpleBacktracking(map);
+        // Map test = algo.simpleBacktracking(map);
 
-        new DrawingPanel((Map)test.clone(), "backtrack");
+        // new DrawingPanel((Map)test.clone(), "backtrack");
         
-        Map solution = algo.backtrackingForwardChecking(map);
+        // Map solution = algo.backtrackingForwardChecking(map);
         
         
         
@@ -61,10 +61,10 @@ public class Main {
         long tournament_size = Math.round(population_size * 0.25);
         long number_of_parents = Math.round(tournament_size * 0.25);
         int inverse_mutation_probability = numberOfRegions;
-        int number_of_generation_limit=1000;
+        int number_of_generation_limit=200;
         double four_color_penality = 0;
 
-        // Map solution = algo.genetic(map, population_size,(int)tournament_size,(int)number_of_parents,inverse_mutation_probability,number_of_generation_limit,four_color_penality);
+        Map solution = algo.genetic(map, population_size,(int)tournament_size,(int)number_of_parents,inverse_mutation_probability,number_of_generation_limit,four_color_penality);
         //four color penalty should be set to 0 for larges map if you want a correct
 
         new DrawingPanel(solution, "solution");
