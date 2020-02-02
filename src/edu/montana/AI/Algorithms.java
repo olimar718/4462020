@@ -16,95 +16,6 @@ public class Algorithms {
 
     }
 
-    protected Map minConflict(Map map, String[] colors) {
-
-        // initial assignement
-        // randomAssignement(map);
-        Boolean consistent = Boolean.FALSE;
-        ArrayList<Connection> conflictingConnections = new ArrayList<>();
-        while (!(consistent)) {
-            for (Connection connection : map.connections) {
-                if (!(connection.connectionCorrect())) {
-                    conflictingConnections.add(connection);
-                }
-
-            }
-            if (conflictingConnections.size() == 0) {
-                consistent = Boolean.TRUE;
-                break;
-            }
-            Connection conflictingConnection = conflictingConnections
-                    .get((int) (Math.random() * conflictingConnections.size()));
-            ArrayList<String> neighbourcolor = new ArrayList<>();
-            double selectedregion = Math.random();
-            if (selectedregion > 0.5) {
-                neighbourcolor.add(conflictingConnection.connectedRegion1.color);// we know it to be our neighbour so we
-                                                                                 // add it to the list
-
-                for (Connection mapConnection : map.connections) {// going trought the list of connection to find the
-                                                                  // one connected to the current region
-                    if (mapConnection.connectedRegion1.regionId == conflictingConnection.connectedRegion2.regionId) {
-                        neighbourcolor.add(mapConnection.connectedRegion2.color);
-                    }
-                    // change to make sure color is not added more than once
-                    if (mapConnection.connectedRegion2.regionId == conflictingConnection.connectedRegion2.regionId) {
-                        neighbourcolor.add(mapConnection.connectedRegion1.color);
-                    }
-                }
-
-            } else {
-                neighbourcolor.add(conflictingConnection.connectedRegion2.color);// we know it to be our neighbour so we
-                                                                                 // add it to the list
-
-                for (Connection mapConnection : map.connections) {// going trought the list of connection to find the
-                                                                  // one connected to the current region
-                    if (mapConnection.connectedRegion1.regionId == conflictingConnection.connectedRegion1.regionId) {
-                        neighbourcolor.add(mapConnection.connectedRegion2.color);
-                    }
-                    // change to make sure color is not added more than once
-                    if (mapConnection.connectedRegion2.regionId == conflictingConnection.connectedRegion1.regionId) {
-                        neighbourcolor.add(mapConnection.connectedRegion1.color);
-                    }
-                }
-
-            }
-            // count the number of time a color is present in neighbourcolour
-            int[] colorTally = new int[4];
-            for (String color : neighbourcolor) {
-                switch (color) {
-                case "red":
-                    colorTally[0]++;
-                    break;
-                case "green":
-                    colorTally[1]++;
-                    break;
-                case "blue":
-                    colorTally[2]++;
-                    break;
-                case "yellow":
-                    colorTally[3]++;
-                    break;
-                default:
-                    break;
-                }
-            }
-            int index = 0;// index of the color the least present in the neightbour
-            for (int i = 0; i < colorTally.length - 1; i++) {
-                if (colorTally[i] < colorTally[index]) {
-                    index = i;
-                }
-            }
-
-            if (selectedregion > 0.5) {
-
-            } else {
-
-            }
-
-        }
-
-        return map;
-    }
 
     protected Map simpleBacktracking(Map map) {
         btMetric = 0;
@@ -249,6 +160,7 @@ public class Algorithms {
 
         }
         System.out.println("Metric, number of step :  " + step_count);
+        System.err.println(map.mapSize+","+step_count+","+temperature+","+map.performance);
         return map;
     }
 
@@ -312,11 +224,13 @@ public class Algorithms {
                 reached_goal = Boolean.TRUE;
                 System.out.println("Found consistent solution, returning");
                 System.out.println("Metric, number of genereation :  " + generation_count);
+                System.err.println(map.mapSize+","+generation_count+","+"1,"+current_best.performance);//print to standart error for plot
                 return current_best;
             }
             if (generation_count >= number_of_generation_limit) {
                 System.out.println("Number of generation limit was reached, returning current best solution");
                 System.out.println("Metric, number of genereation :  " + generation_count);
+                System.err.println(map.mapSize+","+generation_count+","+"0,"+current_best.performance);//print to standart error for plot
                 return current_best;
             }
             Map[] parents = new Map[number_of_parents];
@@ -346,6 +260,7 @@ public class Algorithms {
             }
         }
         System.out.println("Metric, number of genereation :  " + generation_count);
+        
         return current_best;
     }
 
