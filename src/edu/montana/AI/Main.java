@@ -8,7 +8,7 @@ public class Main {
         int numberOfRegions = 10;// Shoud be defined by argument (String[] args)
         int size = 500;// Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
-        map = map_generate(map, size); // Scatter the regions, connect them, no color
+        //map = map_generate(map, size); // Scatter the regions, connect them, no color
 
         //new DrawingPanel((Map) map.clone(), "problem");
         Algorithms algo = new Algorithms();
@@ -29,23 +29,26 @@ public class Main {
         // short annealing_factor, double four_color_penality)
 
         // genetic
+        //solution = algo.genetic(map, population_size, (int) tournament_size, (int) number_of_parents, inverse_mutation_probability, number_of_generation_limit, four_color_penality);
 
         int population_size = 20;
         long tournament_size = Math.round(population_size * 0.25);
         long number_of_parents = Math.round(tournament_size * 0.25);
         int inverse_mutation_probability = numberOfRegions;
         int number_of_generation_limit = 200;
-        double four_color_penality = 0;
+        double four_color_penality = 0.1;
         Map solution = map;
-        while (numberOfRegions < 100) {
+
+
+        
+        while (numberOfRegions <= 100) {
 
             map = new Map(numberOfRegions);
             map = map_generate(map, size);
-            solution = algo.genetic(map, population_size, (int) tournament_size, (int) number_of_parents, inverse_mutation_probability, number_of_generation_limit, four_color_penality);
-
+            solution = algo.simulated_annealing(map, 100, 0.5, four_color_penality);
             numberOfRegions = numberOfRegions + 10;
         }
-        //new DrawingPanel(map, "solution");
+        //new DrawingPanel(solution, "solution");
 
 
     }
