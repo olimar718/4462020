@@ -8,7 +8,7 @@ public class Main {
         int numberOfRegions = 10;// Shoud be defined by argument (String[] args)
         int size = 500;// Shoud be defined by argument (String[] args)
         Map map = new Map(numberOfRegions);
-        map = map_generate(map, size); // Scatter the regions, connect them, no color
+        //map = map_generate(map, size); // Scatter the regions, connect them, no color
 
         //new DrawingPanel((Map) map.clone(), "problem");
         Algorithms algo = new Algorithms();
@@ -50,6 +50,7 @@ public class Main {
         // short annealing_factor, double four_color_penality)
 
         // genetic
+        //solution = algo.genetic(map, population_size, (int) tournament_size, (int) number_of_parents, inverse_mutation_probability, number_of_generation_limit, four_color_penality);
 
         int population_size = 20;
         long tournament_size = Math.round(population_size * 0.25);
