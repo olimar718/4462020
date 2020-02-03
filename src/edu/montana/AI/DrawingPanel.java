@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.util.concurrent.TimeUnit;
 
 public class DrawingPanel extends JPanel {
     int radius = 5;

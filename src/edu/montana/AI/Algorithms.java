@@ -3,7 +3,6 @@ package edu.montana.AI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.lang.Thread;
 
 public class Algorithms {
     String[] colors = { "red", "green", "blue", "yellow" };
@@ -16,19 +15,21 @@ public class Algorithms {
 
     }
 
-
     protected Map simpleBacktracking(Map map) {
         btMetric = 0;
         int graph[][] = new int[map.mapSize][map.mapSize];
         graph = makeAdjacent(map, graph);
         colors1 = new int[map.mapSize];
         int numColors = 3;
+        for(int i =0; i < graph.length; i++){
+            System.out.println(Arrays.toString(graph[i]));
+        }
         if (!(graphColoring(graph, colors1, numColors, 0))) {
             System.out.println("No 3 coloring");
             numColors = 4;
             graphColoring(graph, colors1, numColors, 0);
         }
-        map = colorCorrection(graph, map);
+        map = colorCorrection(map);
         System.err.println(map.mapSize + ", " + btMetric);
         return map;
     }
@@ -48,7 +49,7 @@ public class Algorithms {
             numColors = 4;
             graphColoringForwardCheck(graph, colors1, numColors, 0, colorOptions4);
         }
-        map = colorCorrection(graph, map);
+        map = colorCorrection(map);
         System.err.println(map.mapSize + ", " + fcMetric);
         return map;
     }
@@ -68,7 +69,7 @@ public class Algorithms {
             numColors = 4;
             graphColoringArc(graph, colors1, numColors, 0, colorOptions4);
         }
-        map = colorCorrection(graph, map);
+        map = colorCorrection(map);
         System.err.println(map.mapSize + ", " + arcMetric);
         return map;
     }
@@ -344,20 +345,23 @@ public class Algorithms {
         return colorOptions;
     }
 
+    //For simple backtracking
     public boolean graphColoring(int[][] graph, int[] colors1, int numColors, int current) {
-
+        //Base case: if all the regions have been reached return
         if (current == colors1.length) {
             return true;
         }
-
+        //loop through the colors starting with red
         for (int currentColor = 1; currentColor <= numColors; currentColor++) {
+            //if the color is able to be assigned assign it
             if (assignColor(current, colors1, graph, currentColor, numColors)) {
                 colors1[current] = currentColor;
-                // System.out.println("Current Color: " + currentColor);
+                //recursive call
                 if (graphColoring(graph, colors1, numColors, current + 1)) {
                     btMetric++;
                     return true;
                 }
+                //if false is returned, reset color values starting with red again
                 colors1[current] = 0;
             }
         }
@@ -365,33 +369,29 @@ public class Algorithms {
         return false;
     }
 
-    public int[][] clone2dArray(int[][] input){
-        int[][] temp = new int[input.length][input[0].length];
-        for(int i =0; i < input.length; i++){
-            for(int j=0; j < input[0].length;j++){
-                temp[i][j] = input[i][j];
-            }
-        }
-
-        return temp;
-    }
-
+    //For backtracking with forward checking
     public boolean graphColoringForwardCheck(int[][] graph, int[] colors1, int numColors, int current, int[][] colorOptions) {
+        //Base case: if all the regions have been reached return
         if (current == colors1.length) {
             return true;
         }
 
+        //save current color options incase a backtrack occurs
         int[][] temp = new int[colorOptions.length][colorOptions[0].length];
         temp = clone2dArray(colorOptions);
+        //loop through the colors starting with red
         for (int currentColor = 1; currentColor <= numColors; currentColor++) {
+            //if the color is able to be assigned assign it
             if (assignColor(current, colors1, graph, currentColor, numColors)) {
+                //perform forward check operations
                 colorOptions = forwardCheck(colorOptions, currentColor, current, graph);
-                colors1[current] = currentColor;                
-                //System.out.println("Current Region: " + current + " Current Color: " + currentColor + " Options: " + Arrays.deepToString(colorOptions));
+                colors1[current] = currentColor;    
+                //confirm that the current path is still viable and perform recursive call            
                 if (colorCheck(colorOptions) && graphColoringForwardCheck(graph, colors1, numColors, current + 1, colorOptions)) {
                     fcMetric++;
                     return true;
                 }
+                //reset color options
                 colorOptions = clone2dArray(temp);
                 colors1[current] = 0;
             }
@@ -400,23 +400,30 @@ public class Algorithms {
         return false;
     }
 
+    //For backtracking with arc consistency
     public boolean graphColoringArc(int[][] graph, int[] colors1, int numColors, int current, int[][] colorOptions) {
+        //Base case: if all the regions have been reached return
         if (current == colors1.length) {
             return true;
         }
 
+        //save current color options incase a backtrack occurs
         int[][] temp = new int[colorOptions.length][colorOptions[0].length];
         temp = clone2dArray(colorOptions);
+        //loop through the colors starting with red
         for (int currentColor = 1; currentColor <= numColors; currentColor++) {
+            //if the color is able to be assigned assign it
             if (assignColor(current, colors1, graph, currentColor, numColors)) {
+                //perform forward check and arc consistency operations
                 colorOptions = forwardCheck(colorOptions, currentColor, current, graph);
                 colorOptions = arcCheck(colorOptions, currentColor, current, graph);
-                colors1[current] = currentColor;                
-                // System.out.println("arccccc check: " + current + " Current Color: " + currentColor + " Options: " + Arrays.deepToString(colorOptions));
+                colors1[current] = currentColor;           
+                //confirm that the current path is still viable and perform recursive call       
                 if (colorCheck(colorOptions) && graphColoringArc(graph, colors1, numColors, current + 1, colorOptions)) {
                     arcMetric++;
                     return true;
                 }
+                //reset color options
                 colorOptions = clone2dArray(temp);
                 colors1[current] = 0;
             }
@@ -424,9 +431,20 @@ public class Algorithms {
         arcMetric++;
         return false;
     }
+    
+    // in order to have the array be in a new memory spot and not overwrite the current array, a new temporary array is created
+    public int[][] clone2dArray(int[][] input){
+        int[][] temp = new int[input.length][input[0].length];
+        for(int i =0; i < input.length; i++){
+            for(int j=0; j < input[0].length;j++){
+                temp[i][j] = input[i][j];
+            }
+        }
+        return temp;
+    }
 
     public int[][] forwardCheck(int[][] colorOptions, int currentColor, int current, int[][] graph) {
-        // what isn't currentColor in colorentries = 0
+        // only retain the value of current color for the current region 
         for(int i = 0; i < colorOptions[0].length; i++){
             if(currentColor != colorOptions[current][i]){
                 colorOptions[current][i] = 0;
@@ -436,12 +454,11 @@ public class Algorithms {
             }
         }
         for(int j =0; j < graph.length; j++){
-            //if on graph the value is 1 on the current row, set the corresponding value to 0 on the colorOptions
+            //if there is a connection on the current row, set the corresponding value to 0 in colorOptions
             if (graph[current][j] == 1) {
                 colorOptions[j][currentColor-1] = 0;
             }
         }
-
         return colorOptions;
     }
 
@@ -449,9 +466,11 @@ public class Algorithms {
         //colorOptions[i] = graph[i];
         int tally = 0;
         int temp = 0;
+        //check each colorOption for each region
         for(int i = 0; i < colorOptions.length;i++){
             tally = 0;
             temp = 0;
+            //save color for next if statement and for each color option tally spots which = 0
             for(int j = 0; j < colorOptions[0].length;j++){
                 if(colorOptions[i][j] == 0){
                     tally++;
@@ -460,8 +479,9 @@ public class Algorithms {
                     temp = colorOptions[i][j];
                 }
             }
+            //for each color option, if there is only one color left
             if(tally == colorOptions[0].length-1){
-                //check consistency with surrounding regions
+                //check the consistency with the surrounding regions
                 for(int j = 0; j < graph[0].length;j++){
                     if(graph[i][j] == 1){
                         for(int k = 0; k < colorOptions[0].length; k++){
@@ -476,6 +496,8 @@ public class Algorithms {
         return colorOptions;
     }
 
+    //check if any of the colorOptions have a region with no assignable colors 
+    //ex: an entry of {{0,0,0}, ... } would return false
     public boolean colorCheck(int[][] colorOptions){
         int tally = 0;
         for(int i = 0; i < colorOptions.length;i++){
@@ -486,14 +508,15 @@ public class Algorithms {
                 }
             }
             if(tally == colorOptions[0].length){
-                // System.out.println("tally reached" + tally);
                 return false;
             }
         }        
         return true;
     }
 
+    //check if the current color is allowed to be assigned to the current regions based on the connected regions
     public boolean assignColor(int current, int[] colors1, int[][] graph, int currentColor, int numColors) {
+        //loop through the current row of the adjacency matrix in order to find connections
         for (int j = 0; j < graph.length; j++) {
             if (graph[current][j] == 1 && currentColor == colors1[j]) {
                 return false;
@@ -502,7 +525,8 @@ public class Algorithms {
         return true;
     }
 
-    public Map colorCorrection(int[][] graph, Map map) {
+    //reassign colors from int to correct string
+    public Map colorCorrection(Map map) {
         for (int i = 0; i < colors1.length; i++) {
             switch (colors1[i]) {
             case 1:
