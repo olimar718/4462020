@@ -1,4 +1,4 @@
-Benjamin Cathelineau :
+Benjamin Cathelineau:
 Algorithms.genetic
 Algorithms.genetic_recombine
 Algorithms.genetic_mutate
@@ -13,13 +13,21 @@ Region.clone
 Region.findClosest_connectable
 
 
-Bray Polk : 
+Bray Polkinghorne: 
 DrawingPanel.java
-Algorithms.graphColoring
+Algorithms.simpleBacktracking
 Algorithms.makeAdjacent
+Algorithms.assignOptions
+Algorithms.graphColoring
+Algorithms.clone2dArray
+Algorithms.graphColoringForwardCheck
+Algorithms.graphColoringArc
+Algorithms.forwardCheck
+Algorithms.arcCheck
+Algorithms.colorCheck
 Algorithms.assignColor
-Algorithms.simpleBacktracking
-Algorithms.simpleBacktracking
+Algorithms.colorCorrection
 
 
 geeeksforgeeks:
+https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
