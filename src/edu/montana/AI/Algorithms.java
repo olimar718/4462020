@@ -86,9 +86,7 @@ public class Algorithms {
             reached_goal = Boolean.TRUE;
         }
         while (!(reached_goal) && temperature > 0.1) {
-            temperature = simulated_annealing_schedule(step_count, annealing_factor, initial_temperature);
-            System.out.println("Current temperature : " + temperature);
-            step_count = step_count + 1;
+            System.out.println("Current temperature : " + temperature);            
             rand.setSeed(System.nanoTime());
             // System.out.println("performance " + map.performance);
             ArrayList<Connection> incorrect_connection = new ArrayList<>();
@@ -157,8 +155,10 @@ public class Algorithms {
                 reached_goal = Boolean.TRUE;
                 break;
             }
-
+            step_count = step_count + 1;
+            temperature = simulated_annealing_schedule(step_count, annealing_factor, initial_temperature);
         }
+        
         System.out.println("Metric, number of step :  " + step_count);
         System.err.println(map.mapSize+","+step_count+","+temperature+","+map.performance);
         return map;
