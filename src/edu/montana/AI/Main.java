@@ -17,9 +17,9 @@ public class Main {
 
         // simplebacktracking
         Map solution = map;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             numberOfRegions = 10;
-            while (numberOfRegions <= 100) {
+            while (numberOfRegions < 100) {
 
                 map = new Map(numberOfRegions);
                 map = map_generate(map, size);
